@@ -4,8 +4,8 @@ import java.io.ObjectInput;
 
 public interface INodeFile {
 	//teste
-	public boolean addChunk(int id, ObjectInput file);
-	public ObjectInput getChunk(int id);
+	public boolean addChunk(Chunk chunk);
+	public Object getChunk(int id);
 	public boolean delChunk(int id);
 
 }
