@@ -1,5 +1,6 @@
 package sd.cin.ufpe.br.node;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInput;
 
@@ -12,47 +13,27 @@ import javax.persistence.Query;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 
-public class ChunkDAO implements INodeFile{
+public class ChunkDAO extends GenericDAO<Chunk>{
 
-	private EntityManagerFactory factory = null;
-	private EntityManager manager;
-	
+
 	public ChunkDAO() {
+		super(Chunk.class);
 		// TODO Auto-generated constructor stub
-		factory = Persistence.createEntityManagerFactory("FileControl");
-		manager = factory.createEntityManager();
 	}
+
+	private static ChunkDAO chunkDAO = null;
 	
-	
-	@Override
-	public boolean addChunk(Chunk chunk) {
-		// TODO Auto-generated method stub
-		
-		Boolean result;	
-		EntityTransaction transaction = manager.getTransaction();
-		
-		try {
-			
-			transaction.begin();
-
-			manager.persist(chunk);
-
-			transaction.commit();
-			
-			result = true;
-					
-		} catch (Exception e) {
-			transaction.rollback();
-			result = false;
-
-		} finally {
-			manager.close();
-			
+	public static ChunkDAO getInstance()
+	{
+		if (chunkDAO == null)
+		{
+			chunkDAO = new ChunkDAO();
 		}
-		return result;
+		return chunkDAO;
 	}
+		
 	
-	@Override
+		
 	public boolean delChunk(int id) {
 		// TODO Auto-generated method stub
 		return false;
@@ -60,7 +41,7 @@ public class ChunkDAO implements INodeFile{
 
 		
 	public Object getChunk(int id) {
-		EntityTransaction transaction = manager.getTransaction();
+		EntityTransaction transaction = getEntityManager().getTransaction();
 
 		Object chunk = null;
 					
@@ -74,7 +55,7 @@ public class ChunkDAO implements INodeFile{
 			//   query1.setParameter("param", id);
 			  
 
-			chunk = (Object) manager.find(Chunk.class,id);   
+			chunk = (Object) getEntityManager().find(Chunk.class,id);   
 			
 			
 						
@@ -83,13 +64,9 @@ public class ChunkDAO implements INodeFile{
 
 			System.err.println("Erro: " + e.getMessage());
 		} finally {
-			manager.close();
+			getEntityManager().close();
 		}
 		
 		return chunk;
-	}
-	
-	protected EntityManager getEntityManager() {
-		return manager;
 	}
 }
