@@ -14,26 +14,27 @@ public class Chunk {
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private int idCHunk;
+		private int id;
 		
 	    @Column(name="stream")
 		private byte[] stream;
 		
 		public Chunk() {
 			// TODO Auto-generated constructor stub
+			super();
 		}
-		public Chunk(int idChunk, byte[] stream) {
+		public Chunk(int id, byte[] stream) {
 			// TODO Auto-generated constructor stub
-			this.idCHunk = idChunk;
+			this.id = id;
 			this.stream = stream;
 		}
 		
-		public int getIdCHunk() {
-			return idCHunk;
+		public int getId() {
+			return id;
 		}
 		
-		public void setIdCHunk(int idCHunk) {
-			this.idCHunk = idCHunk;
+		public void setId(int id) {
+			this.id = id;
 		}
 		
 		public byte[] getStream() {
