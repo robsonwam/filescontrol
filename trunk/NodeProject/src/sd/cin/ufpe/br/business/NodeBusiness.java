@@ -31,7 +31,7 @@ public class NodeBusiness implements IControlFile{
     }
 	
 	@Override
-	public boolean addFile(ObjectInput file) {
+	public boolean addFile(Object file) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -55,13 +55,13 @@ public class NodeBusiness implements IControlFile{
 	}
 
 	@Override
-	public ObjectInput getFile(String name) {
+	public Object getFile(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<String> listFiles() {
+	public List<String> listFiles() {
 		// TODO Auto-generated method stub
 		return null;
 	}
