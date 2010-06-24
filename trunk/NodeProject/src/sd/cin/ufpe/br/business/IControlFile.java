@@ -12,10 +12,10 @@ public interface IControlFile {
 	
 	public boolean addNode(Node node);
 	public boolean deleteNode(Node node);
-	public boolean addFile(ObjectInput file);
-	public ObjectInput getFile(String name);
+	public boolean addFile(Object file);
+	public Object getFile(String name);
 	public boolean delFile(String name);
-	public ArrayList<String> listFiles();
+	public List<String> listFiles();
 	
 	public boolean addChunk(Chunk chunk);
 	public boolean deleteChunkByKey(Integer key);
