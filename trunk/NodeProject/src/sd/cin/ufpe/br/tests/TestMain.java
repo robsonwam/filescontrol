@@ -33,25 +33,18 @@ public class TestMain {
 			fileStream = new FileInputStream(file);
 			
 		
-			/*Chunk chunk = new Chunk();
+			Chunk chunk = new Chunk();
 			chunk.setStream(bytes);
 			ChunkPK pk = new ChunkPK();
 						
-			pk.setId(3);
+			pk.setId(1);
+			pk.setSequencia(5);
 			chunk.setId(pk);
 			
-			business.addChunk(chunk);*/
+			//business.addChunk(chunk);
 			
-			List<Chunk> list = business.listChunks();
-			for (Chunk chunk : list) 
-			{
-				System.out.println(chunk.getStream().toString().getBytes());
-				boolean removeu = business.deleteChunk(chunk);
-				if(removeu){
-					System.out.println("chunk removido");
-				}
-			}
-			
+			Chunk test = (Chunk) business.getChunk(1, 1);
+			System.out.println("chunk" + test.getStream());
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
