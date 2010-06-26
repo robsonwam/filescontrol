@@ -43,9 +43,14 @@ public class NodeBusiness implements IControlFile{
 	}
 
 	@Override
-	public boolean delFile(String name) {
+	public boolean delFile(Integer key) {
 		// TODO Auto-generated method stub
-		return false;
+		boolean contemChunks = false;
+		while (contemChunks == true)
+		{
+			contemChunks = deleteChunkByKey(key);
+		}
+		return contemChunks;
 	}
 
 	@Override
