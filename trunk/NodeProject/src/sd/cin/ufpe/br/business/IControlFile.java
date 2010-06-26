@@ -14,7 +14,7 @@ public interface IControlFile {
 	public boolean deleteNode(Node node);
 	public boolean addFile(Object file);
 	public Object getFile(String name);
-	public boolean delFile(String name);
+	public boolean delFile(Integer key);
 	public List<String> listFiles();
 	
 	public boolean addChunk(Chunk chunk);
