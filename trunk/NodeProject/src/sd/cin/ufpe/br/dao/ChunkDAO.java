@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import org.hibernate.CacheMode;
 
 import sd.cin.ufpe.br.node.Chunk;
+import sd.cin.ufpe.br.node.ChunkPK;
 
 
 public class ChunkDAO extends GenericDAO<Chunk>{
@@ -51,4 +52,19 @@ public class ChunkDAO extends GenericDAO<Chunk>{
 		return result;
 	}
 	
+	/**
+	 * * Remove o objeto uma vez passado sua chave como parâmetro. * * @param
+	 * chave * identificadora do objeto
+	 */
+	public final boolean removerPorChave(ChunkPK chave) {
+		Query query = getEntityManager().createQuery(
+				"delete from " + getClassePersistente().getSimpleName()
+				+ " c where c.id.id =" + chave.getId() +" and c.id.sequencia="
+				+chave.getSequencia());
+		
+		query.setHint("org.hibernate.cacheMode", CacheMode.REFRESH);
+		query.executeUpdate();
+		
+		return true;
+	}
 }
