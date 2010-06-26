@@ -43,7 +43,7 @@ public class TestMain {
 			
 			//business.addChunk(chunk);
 			
-			Chunk test = (Chunk) business.getChunk(1, 1);
+			Chunk test = (Chunk) business.getChunk(1, 2);
 			System.out.println("chunk" + test.getStream());
 			
 		} catch (FileNotFoundException e) {
