@@ -16,8 +16,12 @@ public class ChunkPK implements Serializable {
 
 	private int sequencia;
 
-    public ChunkPK() {
+	private int versao;
+		
+    
+	public ChunkPK() {
     }
+	
 	public int getId() {
 		return this.id;
 	}
@@ -31,6 +35,12 @@ public class ChunkPK implements Serializable {
 		this.sequencia = sequencia;
 	}
 
+	public int getVersao() {
+		return versao;
+	}
+	public void setVersao(int versao) {
+		this.versao = versao;
+	}
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
