@@ -14,12 +14,17 @@ public interface IControlFile {
 	public boolean deleteNode(Node node);
 	public boolean addFile(Object file);
 	public Object getFile(String name);
-	public boolean delFile(Integer key);
+	
+	//
+	public boolean delFile(Integer idFile);
+	
 	public List<String> listFiles();
 	
 	public boolean addChunk(Chunk chunk);
-	public boolean deleteChunkByKey(Integer key);
+	public boolean deleteChunkByKey(ChunkPK key);
 	public boolean deleteChunk(Chunk chunk);
-	public Object  getChunk(Integer idFile, Integer sequencia);
+	public Object getChunk(int idFile, int sequencia);
+	public Object getChunk(ChunkPK key);
 	public List<Chunk> listChunks();
+	
 }
