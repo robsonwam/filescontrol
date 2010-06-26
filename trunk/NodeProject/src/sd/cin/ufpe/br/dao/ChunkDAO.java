@@ -38,14 +38,15 @@ public class ChunkDAO extends GenericDAO<Chunk>{
 	 * * Remove o objeto uma vez passado sua chave como parâmetro. * * @param
 	 * chave * identificadora do objeto
 	 */
-	public Chunk selecionarPorChave(Integer chave,Integer chave2) {
+	public Object selecionarPorChave(Integer chave,Integer chave2) {
+		
 		Query query = getEntityManager().createQuery(
 				"select c from " + getClassePersistente().getSimpleName()
-				+ " c where c.id =" + chave.intValue() +" and c.sequencia="
+				+ " c where c.id.id =" + chave.intValue() +" and c.id.sequencia="
 				+chave2.intValue());
 		System.out.println("consulta ="+ query.toString());
 		query.setHint("org.hibernate.cacheMode", CacheMode.REFRESH);
-		Chunk result = (Chunk) query.getSingleResult();
+		Object result = query.getSingleResult();
 		
 		return result;
 	}
