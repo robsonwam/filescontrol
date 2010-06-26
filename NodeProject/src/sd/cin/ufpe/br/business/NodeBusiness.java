@@ -12,7 +12,7 @@ import sd.cin.ufpe.br.node.Node;
 
 public class NodeBusiness implements IControlFile{
 
-	private GenericDAO<Chunk> persistence;
+	private ChunkDAO persistence;
 	
 	private static NodeBusiness instance = null;
 	
@@ -33,6 +33,8 @@ public class NodeBusiness implements IControlFile{
 	@Override
 	public boolean addFile(Object file) {
 		// TODO Auto-generated method stub
+		
+		//boolean zerarArquivos = delFile(key);
 		return false;
 	}
 
@@ -110,9 +112,9 @@ public class NodeBusiness implements IControlFile{
 
 	
 	@Override
-	public Object getChunk(ChunkPK key) {
+	public Object getChunk(Integer idFile, Integer sequencia) {
 		// TODO Auto-generated method stub
-		return persistence.buscarPorChave(key);
+		return persistence.selecionarPorChave(idFile,sequencia);
 		
 	}
 
