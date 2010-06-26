@@ -20,6 +20,6 @@ public interface IControlFile {
 	public boolean addChunk(Chunk chunk);
 	public boolean deleteChunkByKey(Integer key);
 	public boolean deleteChunk(Chunk chunk);
-	public Object getChunk(ChunkPK key);
+	public Object  getChunk(Integer idFile, Integer sequencia);
 	public List<Chunk> listChunks();
 }
