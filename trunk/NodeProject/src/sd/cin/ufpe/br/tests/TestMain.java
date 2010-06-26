@@ -34,17 +34,17 @@ public class TestMain {
 			
 		
 			Chunk chunk = new Chunk();
+			
 			chunk.setStream(bytes);
 			ChunkPK pk = new ChunkPK();
 						
 			pk.setId(1);
-			pk.setSequencia(5);
+			pk.setSequencia(3);
 			chunk.setId(pk);
 			
 			//business.addChunk(chunk);
-			
-			Chunk test = (Chunk) business.getChunk(1, 2);
-			System.out.println("chunk" + test.getStream());
+			boolean test =  business.delFile(1);
+			System.out.println(test);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
