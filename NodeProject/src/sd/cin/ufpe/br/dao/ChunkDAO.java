@@ -10,6 +10,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.hibernate.CacheMode;
+
 import sd.cin.ufpe.br.node.Chunk;
 
 
@@ -31,6 +33,21 @@ public class ChunkDAO extends GenericDAO<Chunk>{
 		}
 		return chunkDAO;
 	}
-			
+	
+	/**
+	 * * Remove o objeto uma vez passado sua chave como parâmetro. * * @param
+	 * chave * identificadora do objeto
+	 */
+	public Chunk selecionarPorChave(Integer chave,Integer chave2) {
+		Query query = getEntityManager().createQuery(
+				"select c from " + getClassePersistente().getSimpleName()
+				+ " c where c.id =" + chave.intValue() +" and c.sequencia="
+				+chave2.intValue());
+		System.out.println("consulta ="+ query.toString());
+		query.setHint("org.hibernate.cacheMode", CacheMode.REFRESH);
+		Chunk result = (Chunk) query.getSingleResult();
+		
+		return result;
+	}
 	
 }
