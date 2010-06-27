@@ -39,12 +39,12 @@ public class TestMain {
 			ChunkPK pk = new ChunkPK();
 						
 			pk.setId(1);
-			pk.setSequencia(3);
+			pk.setFileID(3);
 			chunk.setId(pk);
 			
-			//business.addChunk(chunk);
-			boolean test =  business.delFile(1);
-			System.out.println(test);
+			business.addChunk(chunk);
+			//boolean test =  business.delFile(1);
+			//System.out.println(test);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
