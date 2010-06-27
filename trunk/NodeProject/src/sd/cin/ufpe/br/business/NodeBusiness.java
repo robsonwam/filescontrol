@@ -48,16 +48,16 @@ public class NodeBusiness implements IControlFile{
 	public boolean delFile(Integer idFile) {
 		// TODO Auto-generated method stub
 		boolean contemChunks = false;
-		int sequence = 1;
+		int idChunk = 1;
 		do
 		{
 			
 			ChunkPK key = new ChunkPK();
-			key.setId(idFile);
-			key.setSequencia(sequence);
+			key.setFileID(idFile);
+			key.setId(idChunk);
 			
 			contemChunks = deleteChunkByKey(key);
-			sequence++;
+			idChunk++;
 		}while (!listChunks().isEmpty());
 		return contemChunks;
 	}
@@ -121,11 +121,11 @@ public class NodeBusiness implements IControlFile{
 
 	
 	@Override
-	public Object getChunk(int idFile, int sequencia) {
+	public Object getChunk(int id, int fileID) {
 		// TODO Auto-generated method stub
 		ChunkPK chave = new ChunkPK();
-		chave.setId(idFile);
-		chave.setSequencia(sequencia);
+		chave.setId(id);
+		chave.setFileID(fileID);
 		
 		return persistence.buscarPorChave(chave);
 		

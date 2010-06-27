@@ -14,7 +14,7 @@ public class ChunkPK implements Serializable {
 
 	private int id;
 	
-	private int sequencia;
+	private int fileID;
 	
     
 	public ChunkPK() {
@@ -26,11 +26,11 @@ public class ChunkPK implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getSequencia() {
-		return this.sequencia;
+	public int getFileID() {
+		return this.fileID;
 	}
-	public void setSequencia(int sequencia) {
-		this.sequencia = sequencia;
+	public void setFileID(int fileID) {
+		this.fileID = fileID;
 	}
 	
 	public boolean equals(Object other) {
@@ -43,7 +43,7 @@ public class ChunkPK implements Serializable {
 		ChunkPK castOther = (ChunkPK)other;
 		return 
 			(this.id == castOther.id)
-			&& (this.sequencia == castOther.sequencia);
+			&& (this.fileID == castOther.fileID);
 
     }
     
@@ -51,7 +51,7 @@ public class ChunkPK implements Serializable {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.id;
-		hash = hash * prime + this.sequencia;
+		hash = hash * prime + this.fileID;
 		
 		return hash;
     }

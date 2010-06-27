@@ -43,7 +43,7 @@ public class ChunkDAO extends GenericDAO<Chunk>{
 		
 		Query query = getEntityManager().createQuery(
 				"select c from " + getClassePersistente().getSimpleName()
-				+ " c where c.id.id =" + chave.intValue() +" and c.id.sequencia="
+				+ " c where c.id.id =" + chave.intValue() +" and c.id.fileID="
 				+chave2.intValue());
 		System.out.println("consulta ="+ query.toString());
 		query.setHint("org.hibernate.cacheMode", CacheMode.REFRESH);
@@ -59,8 +59,8 @@ public class ChunkDAO extends GenericDAO<Chunk>{
 	public final boolean removerPorChave(ChunkPK chave) {
 		Query query = getEntityManager().createQuery(
 				"delete from " + getClassePersistente().getSimpleName()
-				+ " c where c.id.id =" + chave.getId() +" and c.id.sequencia="
-				+chave.getSequencia());
+				+ " c where c.id.id =" + chave.getId() +" and c.id.fileID="
+				+chave.getFileID());
 		
 		query.setHint("org.hibernate.cacheMode", CacheMode.REFRESH);
 		query.executeUpdate();
