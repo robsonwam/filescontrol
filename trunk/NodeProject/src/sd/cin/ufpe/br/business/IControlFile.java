@@ -10,19 +10,16 @@ import sd.cin.ufpe.br.node.Node;
 
 public interface IControlFile {
 	
-	public boolean addNode(Node node);
-	public boolean deleteNode(Node node);
-	public boolean addFile(Object file);
-	public Object getFile(String name);
 	
-	//
-	public boolean delFile(Integer idFile);
 	
-	public List<String> listFiles();
+	
+	
 	
 	public boolean addChunk(Chunk chunk);
 	public boolean deleteChunkByKey(ChunkPK key);
 	public boolean deleteChunk(Chunk chunk);
+	public boolean deleteChunksByFile(Integer idFile);
+	
 	public Object getChunk(int id, int fileID);
 	public Object getChunk(ChunkPK key);
 	public List<Chunk> listChunks();
