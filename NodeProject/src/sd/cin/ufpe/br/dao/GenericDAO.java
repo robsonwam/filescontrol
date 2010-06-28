@@ -103,7 +103,7 @@ public abstract class GenericDAO<T> {
 	 * * Remove o objeto uma vez passado sua chave como parâmetro. * * @param
 	 * chave * identificadora do objeto
 	 */
-	public final boolean removerPorChave(Integer chave) {
+	public final boolean removerPorChave(Object chave) {
 		Query query = getEntityManager().createQuery(
 				"delete from " + getClassePersistente().getSimpleName()
 				+ " c where c.id =" + chave);

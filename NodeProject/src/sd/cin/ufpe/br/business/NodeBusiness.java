@@ -30,54 +30,15 @@ public class NodeBusiness implements IControlFile{
 		persistence = ChunkDAO.getInstance();
     }
 	
-	@Override
-	public boolean addFile(Object file) {
-		// TODO Auto-generated method stub
-		
-		//boolean zerarArquivos = delFile(key);
-		return false;
-	}
 
 	@Override
-	public boolean addNode(Node node) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delFile(Integer idFile) {
+	public boolean deleteChunksByFile(Integer idFile) {
 		// TODO Auto-generated method stub
 		boolean contemChunks = false;
-		int idChunk = 1;
-		do
-		{
-			
-			ChunkPK key = new ChunkPK();
-			key.setFileID(idFile);
-			key.setId(idChunk);
-			
-			contemChunks = deleteChunkByKey(key);
-			idChunk++;
-		}while (!listChunks().isEmpty());
+	
+		contemChunks = persistence.deleteChunksByFile(idFile);
+	
 		return contemChunks;
-	}
-
-	@Override
-	public boolean deleteNode(Node node) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Object getFile(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<String> listFiles() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
