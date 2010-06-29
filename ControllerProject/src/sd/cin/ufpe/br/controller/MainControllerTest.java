@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainControllerTest {
 	
@@ -33,6 +35,34 @@ public class MainControllerTest {
 	        }
 	        byte[] bytes = bos.toByteArray();
 	        System.out.println(bytes.length);
+	        
+	        ControllerSD c = new ControllerSD();
+	        ArrayList<Chunk> ac = c.chunkonizer(bytes);
+	        
+	        byte[] restoredFile = new byte[5194];
+	        int index = 0;
+	        for (int i = 0; i < ac.size(); i++) {
+				System.arraycopy(ac.get(i).getArrayChunk(), 0, restoredFile, index, ac.get(i).getArrayChunk().length);
+				index = index + ac.get(i).getArrayChunk().length;
+			}
+	        
+	        File someFile = new File("/Users/davidaragao/Desktop/android_ico_restored.png");
+	        FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(someFile);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        try {
+				fos.write( restoredFile);
+				fos.flush();
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		
 	}
 
