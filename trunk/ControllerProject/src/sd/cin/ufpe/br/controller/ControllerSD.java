@@ -5,17 +5,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Random;
 
 
 public class ControllerSD {
 	
-	private ArrayList<NodeSD> arrayNodes; //list the registered nodes
+	private ArrayList<Node_old> arrayNodes; //list the registered nodes
 	private int lastNodeID; //last node called ID
 	private Hashtable<String, Integer> fileNameToID; //Maps the file name to it`s ID
 	private Hashtable<Integer, ArrayList<Integer>> fileIDToChunksIDArray; //Maps the file ID to it`s chunksIDArray
-	private ArrayList<Chunk> chunkList;
+	private ArrayList<Chunk_old> chunkList;
 	byte[] fileBytes;
 	int fileID;
 	
@@ -23,7 +25,7 @@ public class ControllerSD {
 	public void ReceiveFile(File file/*receber FileSD ou File*/){
 		//[1]Associar o nome do arquivo ao seu ID e por na hash
 		
-		fileID = fileIDGenerator(); 
+		fileID = iDGenerator(); 
 		ArrayList<Integer> chunksIdList = null;
 		
 		FileInputStream fileIS = null;
@@ -48,7 +50,7 @@ public class ControllerSD {
 		}
 		fileBytes = bos.toByteArray();
 		
-		FileSD filesd = new FileSD(fileID, file.getName(), 2, fileBytes);
+		FileSD_old filesd = new FileSD_old(fileID, file.getName(), 2, fileBytes);
 		fileNameToID.put(filesd.getName(), filesd.getId());
 		fileIDToChunksIDArray.put(fileID, chunksIdList);
 		
@@ -58,17 +60,18 @@ public class ControllerSD {
 	
 	//Register incoming nodes
 	public void registerNode(String ip, String port){
-		//deve receber o "endereço" do nó e mapear a um ID.... serviço de nomes?
+		Node_old node = new Node_old(ip, port);
+		//Persistir node
 	}
 	
 	//Deregister outcoming nodes
-	public void deregisterNode(){
-		
+	public void deregisterNode(String ip, String port){
+		//Buscar node com ip porta e remover
 	}
 	
 	//Method that break the file in chunks
-	public ArrayList<Chunk> chunkonizer(byte[] fileArray){
-		ArrayList<Chunk> chunkList = new ArrayList<Chunk>();
+	public ArrayList<Chunk_old> chunkonizer(byte[] fileArray){
+		ArrayList<Chunk_old> chunkList = new ArrayList<Chunk_old>();
 		int index = 0;
 		int chunkLength = fileArray.length/3 /*arrayNodes.size()*/;
 		int rest = fileArray.length%3;
@@ -83,7 +86,7 @@ public class ControllerSD {
 				System.arraycopy(fileArray, index, arrayChunk, 0, chunkLength);
 				index = index + chunkLength;
 			}
-			Chunk chunk = new Chunk(i, 1, arrayChunk);
+			Chunk_old chunk = new Chunk_old(i, 1, arrayChunk);
 			chunkList.add(chunk);
 		}
 		
@@ -92,15 +95,28 @@ public class ControllerSD {
 	}
 	
 	//Method that send the chunks between the registered nodes
-	public ArrayList<Chunk> sendChunkList(){
+	public Chunk_old sendChunkList(ArrayList<Chunk_old> chunklist){
 		//Pegar a lista de chunks e mandar n listas
-		//contentod n-1 chunks para os n nos
-		return chunkList;
+		//contentdo n-1 chunks para os n nos
+		
+		
+//		Iterator it = chunkList.iterator();
+//		int index = 0;
+//		for (int i = 0; i < 3 /*arrayNodes.size()*/; i++) {
+//			ArrayList<Chunk> nodeChunkList = new ArrayList<Chunk>(3);
+//			for (int j = 0; j < 3-1 /*arrayNodes.size()-1*/; j++) {
+//				nodeChunkList.add(chunklist.get((j + index)%3));
+//			}
+//			index++;
+//			//enviar para os nÛs cadastrados
+//		}
+		Chunk_old chunk = null;
+		return chunk;
 	}
 	
 	//Method that retrieve requested file
-	public FileSD retrieveFileSD(int fileID){
-		FileSD file = null;
+	public FileSD_old retrieveFileSD(int fileID){
+		FileSD_old file = null;
 		return file;
 		
 		//Busca os chunks
@@ -108,7 +124,7 @@ public class ControllerSD {
 		//retornar um FileSD
 	}
 	
-	public int fileIDGenerator(){
+	public int iDGenerator(){
 		int generatedID = 0;
 		Random random = new Random();
 		generatedID = random.nextInt(9999);

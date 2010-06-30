@@ -1,37 +1,64 @@
 package sd.cin.ufpe.br.controller;
+import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
-public class Chunk {
-	
-	private int id;
-	private int fileID;
-	private byte[] chunkBytes;
-	
-	public Chunk(int id, int fileID, byte[] chunkBytes) {
+@Entity
+public class Chunk implements Serializable {
+	@EmbeddedId
+	private ChunkPK pk;
+
+	@ManyToOne
+	@JoinColumn(name="fileID")
+	private Filesd fileid;
+
+	@ManyToMany
+	@JoinTable(name="Node_Chunk",
+		joinColumns={
+			@JoinColumn(name="id", referencedColumnName="id"),
+			@JoinColumn(name="fileID", referencedColumnName="fileID")
+		}
+	,
+		inverseJoinColumns={
+			@JoinColumn(name="ip", referencedColumnName="ip"),
+			@JoinColumn(name="port", referencedColumnName="port")
+		}
+	)
+	private Set<Node> nodeCollection;
+
+	private static final long serialVersionUID = 1L;
+
+	public Chunk() {
 		super();
-		this.id = id;
-		this.fileID = fileID;
-		this.chunkBytes = chunkBytes;
 	}
-	
-	public int getId() {
-		return id;
+
+	public ChunkPK getPk() {
+		return this.pk;
 	}
-	public void setId(int id) {
-		this.id = id;
+
+	public void setPk(ChunkPK pk) {
+		this.pk = pk;
 	}
-	public int getFileID() {
-		return fileID;
+
+	public Filesd getFileid() {
+		return this.fileid;
 	}
-	public void setFileID(int fileID) {
-		this.fileID = fileID;
+
+	public void setFileid(Filesd fileid) {
+		this.fileid = fileid;
 	}
-	public byte[] getArrayChunk() {
-		return chunkBytes;
+
+	public Set<Node> getNodeCollection() {
+		return this.nodeCollection;
 	}
-	public void setArrayChunk(byte[] arrayChunk) {
-		this.chunkBytes = arrayChunk;
+
+	public void setNodeCollection(Set<Node> nodeCollection) {
+		this.nodeCollection = nodeCollection;
 	}
-	
-	
 
 }

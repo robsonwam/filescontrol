@@ -12,7 +12,7 @@ public class MainControllerTest {
 	
 	public static void main(String[] args) {
 		
-			File file = new File("/Users/davidaragao/Desktop/android_ico.png");
+			File file = new File("C:\\Documents and Settings\\Administrador\\Desktop\\Eclipse-XaaS.png");
 	        FileInputStream fis = null;
 			try {
 				fis = new FileInputStream(file);
@@ -35,18 +35,21 @@ public class MainControllerTest {
 	        }
 	        byte[] bytes = bos.toByteArray();
 	        System.out.println(bytes.length);
+	        System.out.println(5%5);
 	        
 	        ControllerSD c = new ControllerSD();
-	        ArrayList<Chunk> ac = c.chunkonizer(bytes);
+	        ArrayList<Chunk_old> ac = c.chunkonizer(bytes);
 	        
-	        byte[] restoredFile = new byte[5194];
+	        c.sendChunkList(ac);
+	        
+	        byte[] restoredFile = new byte[40747];
 	        int index = 0;
 	        for (int i = 0; i < ac.size(); i++) {
 				System.arraycopy(ac.get(i).getArrayChunk(), 0, restoredFile, index, ac.get(i).getArrayChunk().length);
 				index = index + ac.get(i).getArrayChunk().length;
 			}
 	        
-	        File someFile = new File("/Users/davidaragao/Desktop/android_ico_restored.png");
+	        File someFile = new File("C:\\Documents and Settings\\Administrador\\Desktop\\Eclipse-XaaS_restored.png");
 	        FileOutputStream fos = null;
 			try {
 				fos = new FileOutputStream(someFile);

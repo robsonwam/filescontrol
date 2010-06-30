@@ -1,6 +1,6 @@
 package sd.cin.ufpe.br.controller;
 
-public class FileSD { //Extender de File?
+public class FileSD_old { //Extender de File?
 	
 	private int id;
 	private String name;
@@ -39,7 +39,7 @@ public class FileSD { //Extender de File?
 		this.arrayFileSD = arrayFileSD;
 	}
 
-	public FileSD(int id, String name, int numberOfChunks, byte[] bs) {
+	public FileSD_old(int id, String name, int numberOfChunks, byte[] bs) {
 		super();
 		this.id = id;
 		this.name = name;
