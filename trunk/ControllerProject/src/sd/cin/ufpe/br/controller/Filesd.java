@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Filesd implements Serializable {
 	@Id
-	private Integer id;
+	private Integer id; 
 
 	private String name;
 
