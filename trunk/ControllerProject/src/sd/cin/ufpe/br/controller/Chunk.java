@@ -14,7 +14,7 @@ public class Chunk implements Serializable {
 	private ChunkPK pk;
 
 	@ManyToOne
-	@JoinColumn(name="fileID")
+	@JoinColumn(name="fileID", insertable = false, updatable = false)
 	private Filesd fileid;
 
 	@ManyToMany
