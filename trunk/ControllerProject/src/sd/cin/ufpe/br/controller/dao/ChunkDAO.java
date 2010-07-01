@@ -1,11 +1,12 @@
 package sd.cin.ufpe.br.controller.dao;
 
-import sd.cin.ufpe.br.dao.ChunkDAO;
+
+import sd.cin.ufpe.br.controller.Chunk;
 
 public class ChunkDAO extends GenericDAO<Chunk> {
 
-	protected ChunkDAO(Class classePersistente) {
-		super(classePersistente);
+	protected ChunkDAO() {
+		super(Chunk.class);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -19,5 +20,9 @@ public class ChunkDAO extends GenericDAO<Chunk> {
 		}
 		return chunkDAO;
 	}
-
+	
+	
 }
+
+
+
