@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
-	<persistence-unit name="ControllerProject">
-		<provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
-  		<class>sd.cin.ufpe.br.controller.Chunk</class>
-  		<class>sd.cin.ufpe.br.controller.Filesd</class>
-  		<class>sd.cin.ufpe.br.controller.Node</class>
-  		<class>sd.cin.ufpe.br.controller.ChunkPK</class>
-  		<class>sd.cin.ufpe.br.controller.NodePK</class>
-    	<properties>
-      		<property name="toplink.logging.level" value="INFO"/>
-      		<property name="toplink.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/filecontrol?jdbcCompliantTruncation=false" />
-      		<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      		<property name="toplink.jdbc.user" value="root"/>
-      		<property name="toplink.jdbc.password" value=""/>
-      		<property name="toplink.ddl-generation" value="create-tables"/> 
-    	</properties>
+<persistence version="1.0"
+			 xmlns="http://java.sun.com/xml/ns/persistence"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="controllerDB">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>sd.cin.ufpe.br.controller.Chunk</class>
+		<class>sd.cin.ufpe.br.controller.ChunkPK</class>
+		<class>sd.cin.ufpe.br.controller.Filesd</class>
+		<class>sd.cin.ufpe.br.controller.Node</class>
+		<class>sd.cin.ufpe.br.controller.NodePK</class>
+    		<properties>
+			<property name="hibernate.connection.username"
+					  value="postgres"/>
+
+			<property name="hibernate.connection.driver_class"
+					  value="org.postgresql.Driver"/>
+
+			<property name="hibernate.connection.password"
+					  value="123456"/>
+
+			<property name="hibernate.show_sql"
+					  value="true"/>
+
+			<property name="hibernate.connection.url"
+					  value="jdbc:postgresql:controllerDB"/>
+
+			<property name="hibernate.dialect"
+					  value="org.hibernate.dialect.PostgreSQLDialect"/>
+
+		</properties>
 	</persistence-unit>
 </persistence>
