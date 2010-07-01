@@ -1,17 +1,34 @@
 package sd.cin.ufpe.br.controller;
+import static javax.persistence.GenerationType.AUTO;
+
 import java.io.Serializable;
 import java.util.Set;
+
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.IdClass;
+import javax.persistence.SequenceGenerator;
 
 @Entity
+@IdClass(sd.cin.ufpe.br.controller.ChunkPK.class)
 public class Chunk implements Serializable {
+	//@Id
+	//private Integer fileid2;
+	
 	@EmbeddedId
 	private ChunkPK pk;
+	
+	/*@Id
+	@GeneratedValue(strategy=AUTO, generator = "chunk_id_seq")
+	@SequenceGenerator(name="chunk_id_seq", sequenceName = "chunk_id_seq")
+	private Integer id;*/
 
 	@ManyToOne
 	@JoinColumn(name="fileID", insertable = false, updatable = false)
@@ -30,6 +47,8 @@ public class Chunk implements Serializable {
 		}
 	)
 	private Set<Node> nodeCollection;
+    
+	
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,6 +70,9 @@ public class Chunk implements Serializable {
 
 	public void setFileid(Filesd fileid) {
 		this.fileid = fileid;
+	}
+	public void setFileidDois(Integer fileid) {
+	//	this.fileid2 = fileid;
 	}
 
 	public Set<Node> getNodeCollection() {

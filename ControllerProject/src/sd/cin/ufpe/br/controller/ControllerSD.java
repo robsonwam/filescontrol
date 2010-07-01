@@ -97,7 +97,7 @@ public class ControllerSD {
 		return result;
 	}
 	
-	private boolean AddChunk(Integer fileId){
+	public boolean AddChunk(Integer fileId){
 		boolean result = false;
 		
 		try {
@@ -106,6 +106,7 @@ public class ControllerSD {
 				cpk.setFileid2(fileId);
 				Chunk chunk = new Chunk();
 				chunk.setPk(cpk);
+				//chunk.setFileidDois(fileId);
 				//setar o conjunto de nos que o chunk 
 				
 				chunkDao.begin();
