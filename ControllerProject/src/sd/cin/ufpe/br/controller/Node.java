@@ -4,8 +4,10 @@ import java.util.Set;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="Node")
 public class Node implements Serializable {
 	@EmbeddedId
 	private NodePK pk;

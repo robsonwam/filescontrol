@@ -110,7 +110,7 @@ public abstract class GenericDAO<T> {
 	public final boolean removerPorChave(Object chave) {
 		Query query = getEntityManager().createQuery(
 				"delete from " + getClassePersistente().getSimpleName()
-				+ " c where c.id =" + chave);
+				+ " c where c.pk =" + chave.toString());
 		query.setHint("org.hibernate.cacheMode", CacheMode.REFRESH);
 		query.executeUpdate();
 		

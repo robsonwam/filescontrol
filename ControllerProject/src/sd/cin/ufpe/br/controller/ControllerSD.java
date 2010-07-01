@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
+import br.cin.ufpe.sd.Arquivo;
+
+import sd.cin.ufpe.br.controller.dao.ChunkDAO;
+import sd.cin.ufpe.br.controller.dao.FilesSdDAO;
 import sd.cin.ufpe.br.controller.dao.NodeDAO;
 
 public class ControllerSD {
@@ -24,23 +29,33 @@ public class ControllerSD {
 	int fileID;
 
 	private NodeDAO nodeDao;
+	private FilesSdDAO fileDao;
+	private ChunkDAO chunkDao;
 	
 
 	public ControllerSD() {
 		super();
 		this.nodeDao = NodeDAO.getInstance();
+		this.fileDao = FilesSdDAO.getInstance();
+		this.chunkDao = ChunkDAO.getInstance();
 	}
 
 	// Receives client application file
-	public void ReceiveFile(File file/* receber FileSD ou File */) {
-		// [1]Associar o nome do arquivo ao seu ID e por na hash
+	public void ReceiveFile(Arquivo file/* receber FileSD ou File */) {
 
-		// fileID = iDGenerator();
+		// adiciona a referencia do id ao nome;
+		Filesd fileSd = new Filesd();
+		fileSd.setName(file.getName());
+		
+		AddFile(fileSd);
+		int fileID = fileSd.getId();
+		
+		//Transforma o arquivo em array de bytes
 		ArrayList<Integer> chunksIdList = null;
 
 		FileInputStream fileIS = null;
 		try {
-			fileIS = new FileInputStream(file);
+			fileIS = new FileInputStream(file.getName());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,13 +72,53 @@ public class ControllerSD {
 		} catch (IOException ex) {
 
 		}
+		//Arquivo em bytes
 		fileBytes = bos.toByteArray();
+		
+		this.chunkList = this.chunkonizer(fileBytes, fileID);
+		
+		this.sendChunkList(this.chunkList);
+	}
 
-		FileSD_old filesd = new FileSD_old(fileID, file.getName(), 2, fileBytes);
-		fileNameToID.put(filesd.getName(), filesd.getId());
-		fileIDToChunksIDArray.put(fileID, chunksIdList);
-
-		// [4]Distribuir os chunks entre os n—s
+	public boolean AddFile(Filesd file) {
+		boolean result = false;
+		try {
+			if (!file.getName().isEmpty()) {
+				
+				fileDao.begin();
+				fileDao.salvar(file);
+				fileDao.commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			fileDao.rollback();
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private boolean AddChunk(Integer fileId){
+		boolean result = false;
+		
+		try {
+			if (fileId != null) {
+				ChunkPK cpk = new ChunkPK();
+				cpk.setFileid2(fileId);
+				Chunk chunk = new Chunk();
+				chunk.setPk(cpk);
+				//setar o conjunto de nos que o chunk 
+				
+				chunkDao.begin();
+				chunkDao.salvar(chunk);
+				chunkDao.commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			chunkDao.rollback();
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 
 	// Register incoming nodes
@@ -77,6 +132,7 @@ public class ControllerSD {
 				pk.setPort(port);
 				Node node = new Node();
 				node.setPk(pk);
+				node.setNumrequisicoes(0L);
 
 				nodeDao.begin();
 				nodeDao.salvar(node);
@@ -96,12 +152,8 @@ public class ControllerSD {
 
 		try {
 			if (!ip.isEmpty() && port != null) {
-				NodePK pk = new NodePK();
-				pk.setIp(ip);
-				pk.setPort(port);
-
 				nodeDao.begin();
-				nodeDao.removerPorChave(pk);
+				nodeDao.removerPorChave(ip, port);
 				nodeDao.commit();
 				result = true;
 				return result;
@@ -114,15 +166,16 @@ public class ControllerSD {
 	}
 
 	// Method that break the file in chunks
-	public ArrayList<Chunk_old> chunkonizer(byte[] fileArray) {
-		ArrayList<Chunk_old> chunkList = new ArrayList<Chunk_old>();
+	public ArrayList<Chunk_old> chunkonizer(byte[] fileArray, int fileID) {
+		ArrayList<Chunk_old> chunkOldList = new ArrayList<Chunk_old>();
+		List<Chunk> chunkList = chunkDao.buscarTodos();
 		int index = 0;
-		int chunkLength = fileArray.length / 3 /* arrayNodes.size() */;
-		int rest = fileArray.length % 3;
+		int chunkLength = fileArray.length / chunkList.size();
+		int rest = fileArray.length % chunkList.size();
 		byte[] arrayChunk;
 
-		for (int i = 0; i < 3/* arrayNodes.size() */; i++) {
-			if (i == 2) {
+		for (int i = 0; i < chunkList.size(); i++) {
+			if (i == chunkList.size()-1) {
 				arrayChunk = new byte[chunkLength + rest];
 				System.arraycopy(fileArray, index, arrayChunk, 0, chunkLength
 						+ rest);
@@ -131,31 +184,22 @@ public class ControllerSD {
 				System.arraycopy(fileArray, index, arrayChunk, 0, chunkLength);
 				index = index + chunkLength;
 			}
-			Chunk_old chunk = new Chunk_old(i, 1, arrayChunk);
-			chunkList.add(chunk);
+			Chunk_old chunkOld = new Chunk_old(i, 1, arrayChunk);
+			this.AddChunk(fileID);
+			chunkOldList.add(chunkOld);
 		}
 
 		// Ou envia o chunk logo aqui ou cria uma lista de chunks para ser usada
 		// em [4]
-		return chunkList;
+		return chunkOldList;
 	}
 
 	// Method that send the chunks between the registered nodes
 	public Chunk_old sendChunkList(ArrayList<Chunk_old> chunklist) {
-		// Pegar a lista de chunks e mandar n listas
-		// contentdo n-1 chunks para os n nos
-
-		// Iterator it = chunkList.iterator();
-		// int index = 0;
-		// for (int i = 0; i < 3 /*arrayNodes.size()*/; i++) {
-		// ArrayList<Chunk> nodeChunkList = new ArrayList<Chunk>(3);
-		// for (int j = 0; j < 3-1 /*arrayNodes.size()-1*/; j++) {
-		// nodeChunkList.add(chunklist.get((j + index)%3));
-		// }
-		// index++;
-		// //enviar para os nós cadastrados
-		// }
 		Chunk_old chunk = null;
+		
+		//Enviar os chunks para os nos registrados
+		
 		return chunk;
 	}
 

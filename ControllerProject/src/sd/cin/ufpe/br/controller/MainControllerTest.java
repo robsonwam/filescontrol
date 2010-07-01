@@ -7,6 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import br.cin.ufpe.sd.Arquivo;
 
 import sd.cin.ufpe.br.controller.dao.NodeDAO;
 
@@ -41,8 +45,25 @@ public class MainControllerTest {
 		byte[] bytes = bos.toByteArray();
 
 		ControllerSD csd = new ControllerSD();
-		csd.registerNode("127.0.0.1", 7777);
+		//csd.registerNode("localhost", 7777);
+		Filesd fileS = new Filesd();
+		fileS.setName("Teste");
+		
+		Arquivo teste = new Arquivo();
+		teste.setName("au au");
+		teste.setFile(bytes);
+		//Set hashSet = new HashSet(csd.chunkonizer(bytes));
+		//fileS.setChunkCollection(hashSet);
+		
+		csd.AddFile(fileS);
+		
+//		csd.ReceiveFile(teste);
+		
+//		csd.deregisterNode("localhost", 7777);
+//		csd.retrieveFileSD(1);
 
+		
+		//Monta o arquivo
 		// System.out.println(bytes.length);
 		// System.out.println(5%5);
 		//	        
