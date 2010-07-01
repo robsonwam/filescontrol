@@ -39,7 +39,7 @@ public class TestMain {
 			ChunkPK pk = new ChunkPK();
 						
 			pk.setId(1);
-			pk.setFileID(3);
+			pk.setFileID(7);
 			chunk.setId(pk);
 			
 			business.addChunk(chunk);
