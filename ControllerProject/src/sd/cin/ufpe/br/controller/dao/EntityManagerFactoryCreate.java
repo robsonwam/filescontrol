@@ -19,7 +19,7 @@ public class EntityManagerFactoryCreate {
 	}
 
 	private EntityManagerFactoryCreate() {
-		emf = Persistence.createEntityManagerFactory("ControllerProject");
+		emf = Persistence.createEntityManagerFactory("controllerDB");
 		em = emf.createEntityManager();
 
 	}
