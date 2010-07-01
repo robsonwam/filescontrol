@@ -45,32 +45,24 @@ public class MainControllerTest {
 		byte[] bytes = bos.toByteArray();
 
 		ControllerSD csd = new ControllerSD();
-		//csd.registerNode("localhost", 7777);
-		Filesd fileS = new Filesd();
-		fileS.setName("Teste");
 		
-		Arquivo teste = new Arquivo();
-		teste.setName("au au");
-		teste.setFile(bytes);
-		//Set hashSet = new HashSet(csd.chunkonizer(bytes));
-		//fileS.setChunkCollection(hashSet);
+//		csd.registerNode("127.0.0.1", 80);
+//		csd.deregisterNode("127.0.0.1", 80);
+//		
+		Filesd filesd = new Filesd();
+		filesd.setName("Arquivo");
+//		csd.AddFile(filesd);
 		
-		csd.AddFile(fileS);
-		
-//		csd.ReceiveFile(teste);
-		
-//		csd.deregisterNode("localhost", 7777);
-//		csd.retrieveFileSD(1);
-
+		csd.deregisterNode("127.0.0.1", 80);
 		
 		//Monta o arquivo
 		// System.out.println(bytes.length);
 		// System.out.println(5%5);
 		//	        
 		// ControllerSD c = new ControllerSD();
-		// ArrayList<Chunk_old> ac = c.chunkonizer(bytes);
+		//ArrayList<Chunk_old> ac = c.chunkonizer(bytes);
 		//	        
-		// c.sendChunkList(ac);
+		 csd.AddChunk(1);
 		//	        
 		// byte[] restoredFile = new byte[40747];
 		// int index = 0;

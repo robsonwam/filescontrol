@@ -1,6 +1,8 @@
 package sd.cin.ufpe.br.controller.dao;
 
 import sd.cin.ufpe.br.controller.Filesd;
+import sd.cin.ufpe.br.controller.Node;
+import sd.cin.ufpe.br.controller.NodePK;
 
 public class FilesSdDAO extends GenericDAO<Filesd>{
 

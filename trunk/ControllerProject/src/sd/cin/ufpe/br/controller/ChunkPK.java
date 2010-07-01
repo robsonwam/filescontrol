@@ -1,13 +1,19 @@
 package sd.cin.ufpe.br.controller;
+import static javax.persistence.GenerationType.AUTO;
+
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.SequenceGenerator;
 
 @Embeddable
 public class ChunkPK implements Serializable {
 	@Column(name="fileID", insertable=false, updatable=false)
 	private Integer fileid2;
-
+	
+	@GeneratedValue(strategy=AUTO, generator = "chunk_id_seq")
+	@SequenceGenerator(name="chunk_id_seq", sequenceName = "chunk_id_seq")
 	private Integer id;
 
 	private static final long serialVersionUID = 1L;
