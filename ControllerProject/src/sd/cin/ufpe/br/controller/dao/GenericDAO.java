@@ -6,6 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.hibernate.CacheMode;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Order;
 
 import sd.cin.ufpe.br.controller.Chunk;
@@ -129,7 +135,42 @@ public abstract class GenericDAO<T> {
 		
 	}
 
+	/**
+	 * * Busca o objeto de acordo com o objeto preenchido com os valores passado
+	 * * como exemplo. * * @param objeto * utilizado para realizar a busca * @param
+	 * ordenacoes * lista de critérios de ordenação * @return Lista de objetos
+	 * retornada
+	 */
+	public List buscarPorExemplo(T objeto, Order... ordenacoes) {
+		Session session = (Session) getEntityManager().getDelegate();
+//		session.setCacheMode(CacheMode.REFRESH);
+		Example example = criaExemplo(objeto);
+		Criteria criteria = session.createCriteria(objeto.getClass()).add(
+				example);
+		for (int i = 0; i < ordenacoes.length; i++) {
+			criteria.addOrder((org.hibernate.criterion.Order) ordenacoes[i]);
+		}
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (List) criteria.list();
+	}	
 	
+	/**
+	 * * Busca o objeto de acordo com o objeto preenchido com os valores passado
+	 * * como exemplo. * * @param objeto * @param indiceInicial * @param
+	 * indiceFinal * @param ordenacoes * lista de critérios de ordenação. * @return
+	 * Lista de orden
+	 */
+	public final List buscarPorExemplo(T objeto, Integer indiceInicial,
+			Integer indiceFinal, Order... ordenacoes) {
+		Example example = criaExemplo(objeto);
+		Criteria criteria = criaCriteria().add(example);
+		criteria.setFirstResult(indiceInicial);
+		criteria.setMaxResults(indiceFinal);
+		for (int i = 0; i < ordenacoes.length; i++) {
+			criteria.addOrder((org.hibernate.criterion.Order) ordenacoes[i]);
+		}
+		return (List) criteria.list();
+	}
 		
 
 	/**
@@ -233,9 +274,28 @@ public abstract class GenericDAO<T> {
 	protected final Class getClassePersistente() {
 		return classePersistente;
 	}
-	public void addChunk(Chunk chunk) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * * Retorna o objeto da clases Criteria. * * @return um objeto do tipo
+	 * Criteria do Hibernate
+	 */
+	
+	protected final Criteria criaCriteria() {
+		Session session = (Session) getEntityManager().getDelegate();
+//		session.setCacheMode(CacheMode.REFRESH);
+		return session.createCriteria(getClassePersistente());
+	}
+
+	/**
+	 * * Método utilizado para criar o objeto Example. Este objeto é utilizado *
+	 * para realizar a busca por exemplo. * * @param objeto * sobre o qual o
+	 * Example será criado * @return em objeto do tipo Example
+	 */
+	protected final Example criaExemplo(T objeto) {
+		Example example = Example.create(objeto);
+		example.enableLike(MatchMode.ANYWHERE);
+		example.excludeZeroes();
+		example.ignoreCase();
+		return example;
 	}
 
 	
