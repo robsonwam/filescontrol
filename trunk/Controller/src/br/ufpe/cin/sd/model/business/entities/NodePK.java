@@ -14,7 +14,7 @@ public class NodePK implements Serializable {
 
 	private String ip;
 
-	private String port;
+	private Integer port;
 
     public NodePK() {
     }
@@ -24,10 +24,10 @@ public class NodePK implements Serializable {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public String getPort() {
+	public Integer getPort() {
 		return this.port;
 	}
-	public void setPort(String port) {
+	public void setPort(Integer port) {
 		this.port = port;
 	}
 
