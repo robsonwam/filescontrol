@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import br.ufpe.cin.sd.model.business.entities.Chunk;
-import br.ufpe.cin.sd.model.business.entities.ChunkPK;
 import br.ufpe.cin.sd.model.persistence.dao.impl.ChunkDAO;
 import br.ufpe.cin.sd.model.persistence.interfaces.IRegister;
 
@@ -70,8 +69,8 @@ public class RegisterChunk {
 		return retorno;
 	}
 
-	public Object buscarPorChave(ChunkPK chunkPK) {
-		return iRegister.buscarPorChave(chunkPK);
+	public Object buscarPorChave(Integer id) {
+		return iRegister.buscarPorChave(id);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -5,7 +5,6 @@
 	<persistence-unit name="ControllerDB">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>br.ufpe.cin.sd.model.business.entities.Chunk</class>
-		<class>br.ufpe.cin.sd.model.business.entities.ChunkPK</class>
 		<class>br.ufpe.cin.sd.model.business.entities.FileSd</class>
 		<class>br.ufpe.cin.sd.model.business.entities.Node</class>
 		<class>br.ufpe.cin.sd.model.business.entities.NodePK</class>

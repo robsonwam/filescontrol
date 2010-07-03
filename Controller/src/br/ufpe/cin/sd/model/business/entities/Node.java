@@ -28,8 +28,7 @@ public class Node implements Serializable {
 			@JoinColumn(name="port", referencedColumnName="port")
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="file_id", referencedColumnName="file_id"),
-			@JoinColumn(name="id", referencedColumnName="id")
+			@JoinColumn(name="id")
 			}
 		)
 	private Set<Chunk> chunks;
