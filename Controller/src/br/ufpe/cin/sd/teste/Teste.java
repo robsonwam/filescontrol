@@ -12,7 +12,7 @@ public class Teste {
 		Node node = new Node();
 		NodePK pk = new NodePK();
 		pk.setIp("localhost");
-		pk.setPort("80");
+		pk.setPort(80);
 		node.setId(pk);
 		node.setNumRequisicoes(0);
 		Facade facade = new Facade();

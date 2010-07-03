@@ -53,7 +53,7 @@ CREATE TABLE "node_chunk"(
  "id" Integer NOT NULL,
  "file_id" Integer NOT NULL,
  "ip" Varchar NOT NULL,
- "port" Varchar NOT NULL
+ "port" Integer NOT NULL
 )
 WITHOUT OIDS
 ;
