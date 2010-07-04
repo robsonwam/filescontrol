@@ -23,7 +23,8 @@ ALTER TABLE "file_sd" ADD CONSTRAINT "id" UNIQUE ("id")
 CREATE TABLE "node"(
  "ip" Varchar NOT NULL,
  "port" Integer NOT NULL,
- "estado" Boolean NOT NULL
+ "estado" Boolean NOT NULL,
+ "requisicoes" Integer NOT NULL
 )
 WITHOUT OIDS
 ;
