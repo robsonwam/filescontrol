@@ -16,8 +16,11 @@ public class Node implements Serializable {
 	@EmbeddedId
 	private NodePK id;
 
-	@Column(name="num_requisicoes")
-	private Integer numRequisicoes;
+//	@Column(name="num_requisicoes")
+//	private Integer numRequisicoes;
+	
+	@Column(name="estado")
+	private Boolean estado;
 
 	//bi-directional many-to-many association to Chunk
     @ManyToMany
@@ -44,13 +47,13 @@ public class Node implements Serializable {
 		this.id = id;
 	}
 	
-	public Integer getNumRequisicoes() {
-		return this.numRequisicoes;
-	}
-
-	public void setNumRequisicoes(Integer numRequisicoes) {
-		this.numRequisicoes = numRequisicoes;
-	}
+//	public Integer getNumRequisicoes() {
+//		return this.numRequisicoes;
+//	}
+//
+//	public void setNumRequisicoes(Integer numRequisicoes) {
+//		this.numRequisicoes = numRequisicoes;
+//	}
 
 	public Set<Chunk> getChunks() {
 		return this.chunks;
@@ -58,6 +61,14 @@ public class Node implements Serializable {
 
 	public void setChunks(Set<Chunk> chunks) {
 		this.chunks = chunks;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+
+	public Boolean getEstado() {
+		return estado;
 	}
 	
 }
