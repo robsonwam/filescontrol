@@ -30,13 +30,14 @@ public class Controller {
 //		return instance;
 //	}
 //	
-	public boolean registerNode(String ip, Integer port) throws OperacaoInvalidaException{
+	public boolean registerNode(String ip, Integer port,Boolean estado) throws OperacaoInvalidaException{
 		NodePK pk = new NodePK();
 		pk.setIp(ip);
 		pk.setPort(port);
 		Node node = new Node();
 		node.setId(pk);
-		node.setNumRequisicoes(0);
+		node.setEstado(estado);
+		//node.setNumRequisicoes(0);
 		return this.inserir(node);
 	}
 	
