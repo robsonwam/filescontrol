@@ -21,6 +21,10 @@ public class Node implements Serializable {
 	
 	@Column(name="estado")
 	private Boolean estado;
+	
+
+	@Column(name="requisicoes")
+	private Integer requisicoes;
 
 	//bi-directional many-to-many association to Chunk
     @ManyToMany
@@ -71,4 +75,11 @@ public class Node implements Serializable {
 		return estado;
 	}
 	
+	public Integer getRequisicoes() {
+		return requisicoes;
+	}
+	
+	public void setRequisicoes(Integer contador) {
+		this.requisicoes = contador;
+	}
 }

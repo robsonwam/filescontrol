@@ -1,5 +1,6 @@
 package br.ufpe.cin.sd.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -14,6 +15,7 @@ import br.ufpe.cin.sd.model.business.entities.NodePK;
 import br.ufpe.cin.sd.model.business.register.RegisterChunk;
 import br.ufpe.cin.sd.model.business.register.RegisterFileSd;
 import br.ufpe.cin.sd.model.business.register.RegisterNode;
+import br.ufpe.cin.sd.model.persistence.dao.impl.ChunkDAO;
 
 public class Controller {
 
@@ -30,6 +32,13 @@ public class Controller {
 //		return instance;
 //	}
 //	
+	public Controller() {
+		super();
+		registerChunk = RegisterChunk.getInstance();
+		registerFileSd = RegisterFileSd.getInstance();
+		registerNode = RegisterNode.getInstance();
+	}
+	
 	public boolean registerNode(String ip, Integer port) throws OperacaoInvalidaException{
 		NodePK pk = new NodePK();
 		pk.setIp(ip);
@@ -37,7 +46,7 @@ public class Controller {
 		Node node = new Node();
 		node.setId(pk);
 		node.setEstado(true);
-		//node.setNumRequisicoes(0);
+		node.setRequisicoes(0);
 		return this.inserir(node);
 	}
 	
@@ -133,12 +142,24 @@ public class Controller {
 		}
 	}
 
-
-	public Controller() {
-		super();
-		registerChunk = RegisterChunk.getInstance();
-		registerFileSd = RegisterFileSd.getInstance();
-		registerNode = RegisterNode.getInstance();
+	public boolean requestFile(int fileID){
+		boolean result = false;
+		
+		FileSd fileSd = new FileSd();
+		fileSd.setId(fileID);
+		
+		try {
+			FileSd file = (FileSd) buscarPorChave(fileSd);
+			ArrayList<Chunk> chunksList =  (ArrayList<Chunk>) file.getChunks();
+			for (Chunk chunk : chunksList) {
+				chunk.getNodes();
+			}
+		} catch (OperacaoInvalidaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 
 }
