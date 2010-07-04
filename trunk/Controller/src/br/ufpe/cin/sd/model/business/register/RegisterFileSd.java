@@ -22,7 +22,7 @@ public class RegisterFileSd {
 
     private IRegister<FileSd> iRegister = null;
     private IRegister<Node> iRegisterNode = null;
-    private IRegister<Chunk> iRegisterChunk = null;
+    private RegisterChunk iRegisterChunk = null;
 
     public static RegisterFileSd getInstance()
     {
@@ -37,7 +37,7 @@ public class RegisterFileSd {
     {
         iRegister = FileSdDAO.getInstance();
         iRegisterNode = NodeDAO.getInstance();
-        iRegisterChunk = ChunkDAO.getInstance();
+        iRegisterChunk = RegisterChunk.getInstance();
     }
     
     public boolean inserir(FileSd fileSd){
@@ -48,9 +48,7 @@ public class RegisterFileSd {
 			iRegister.salvar((FileSd) fileSd);
 			
 			ArrayList<Chunk> chunkList = this.chunkonizer(fileSd);
-			for (Chunk chunk : chunkList) {
-				iRegisterChunk.salvar(chunk);
-			}
+			iRegisterChunk.inserirListaBalanceada(chunkList);
 			
 		} catch (Exception e) {
 			retorno = false;
