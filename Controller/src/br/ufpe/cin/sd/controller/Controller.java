@@ -1,6 +1,8 @@
 package br.ufpe.cin.sd.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -15,7 +17,6 @@ import br.ufpe.cin.sd.model.business.entities.NodePK;
 import br.ufpe.cin.sd.model.business.register.RegisterChunk;
 import br.ufpe.cin.sd.model.business.register.RegisterFileSd;
 import br.ufpe.cin.sd.model.business.register.RegisterNode;
-import br.ufpe.cin.sd.model.persistence.dao.impl.ChunkDAO;
 
 public class Controller {
 
@@ -23,33 +24,33 @@ public class Controller {
 	private RegisterFileSd registerFileSd = null;
 	private RegisterNode registerNode = null;
 
-//	private static Controller instance = null;
-//
-//	public static Controller getInstance() {
-//		if (instance == null) {
-//			instance = new Controller();
-//		}
-//		return instance;
-//	}
-//	
+	// private static Controller instance = null;
+	//
+	// public static Controller getInstance() {
+	// if (instance == null) {
+	// instance = new Controller();
+	// }
+	// return instance;
+	// }
+	//	
 	public Controller() {
 		super();
 		registerChunk = RegisterChunk.getInstance();
 		registerFileSd = RegisterFileSd.getInstance();
 		registerNode = RegisterNode.getInstance();
 	}
-	
-	public boolean registerNode(String ip, Integer port) throws OperacaoInvalidaException{
+
+	public boolean registerNode(String ip, Integer port)
+			throws OperacaoInvalidaException {
 		NodePK pk = new NodePK();
 		pk.setIp(ip);
 		pk.setPort(port);
 		Node node = new Node();
 		node.setId(pk);
-		node.setEstado(true);
+		node.setAtivo(true);
 		node.setRequisicoes(0);
 		return this.inserir(node);
 	}
-	
 
 	public boolean inserir(Object object) throws OperacaoInvalidaException {
 		if (object instanceof Chunk) {
@@ -59,6 +60,7 @@ public class Controller {
 			fileSd.setFile(((Arquivo) object).getFile());
 			fileSd.setId(((Arquivo) object).getId());
 			fileSd.setName(((Arquivo) object).getName());
+			fileSd.setSize(((Arquivo) object).getFile().length);
 			return registerFileSd.inserir(fileSd);
 		} else if (object instanceof Node) {
 			return registerNode.inserir((Node) object);
@@ -136,29 +138,68 @@ public class Controller {
 		} else if (object instanceof Node) {
 			return registerNode.buscarPorExemplo((Node) object, ordenacoes);
 
-		}
-		else {
+		} else {
 			throw new OperacaoInvalidaException();
 		}
 	}
 
-	public boolean requestFile(int fileID){
-		boolean result = false;
-		
+	public FileSd requestFile(int fileID) {
+		FileSd result = null;
+
 		FileSd fileSd = new FileSd();
 		fileSd.setId(fileID);
-		
+
+		byte[] reqFileArray = null;
+		ArrayList<Chunk> reqChunkList = null;
+
 		try {
-			FileSd file = (FileSd) buscarPorChave(fileSd);
-			ArrayList<Chunk> chunksList =  (ArrayList<Chunk>) file.getChunks();
-			for (Chunk chunk : chunksList) {
-				chunk.getNodes();
+			FileSd fileTrans = (FileSd) buscarPorChave(fileSd);
+			result.setId(fileTrans.getId());
+			result.setName(fileTrans.getName());
+			reqFileArray = new byte[fileTrans.getSize()];
+			ArrayList<Chunk> chunkList = (ArrayList<Chunk>) fileTrans.getChunks();
+			for (Chunk chunk : chunkList) {
+				reqChunkList.add(requestChunk(chunk));
 			}
 		} catch (OperacaoInvalidaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		int index = 0;
+		for (int i = 0; i < reqChunkList.size(); i++) {
+			System.arraycopy(reqChunkList.get(i).getStream(), 0,
+					reqFileArray, index, reqChunkList.get(i).getStream().length);
+			index = index + reqChunkList.get(i).getStream().length;
+		}
 		
+		result.setFile(reqFileArray);
+		
+		return result;
+	}
+
+	private Chunk requestChunk(Chunk chunkTrans) {
+		Chunk result = null;
+
+		ArrayList<Node> nodeList = (ArrayList<Node>) chunkTrans.getNodes();
+
+		Node reqNode = null;
+		Collections.sort(nodeList, new Comparator<Node>() {
+
+			@Override
+			public int compare(Node o1, Node o2) {
+				return o1.getRequisicoes() - o2.getRequisicoes();
+			}
+		});
+		for (Node node : nodeList) {
+			if (node.getAtivo() == true) {
+				reqNode = node;
+				//result = metodo que traz o pedaco
+				if(result != null){
+					break;
+				}
+			}
+		}
 		return result;
 	}
 
