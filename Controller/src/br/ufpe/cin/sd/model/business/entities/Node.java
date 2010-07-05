@@ -19,8 +19,8 @@ public class Node implements Serializable {
 //	@Column(name="num_requisicoes")
 //	private Integer numRequisicoes;
 	
-	@Column(name="estado")
-	private Boolean estado;
+	@Column(name="ativo")
+	private Boolean ativo;
 	
 
 	@Column(name="requisicoes")
@@ -67,12 +67,12 @@ public class Node implements Serializable {
 		this.chunks = chunks;
 	}
 
-	public void setEstado(Boolean estado) {
-		this.estado = estado;
+	public void setAtivo(Boolean estado) {
+		this.ativo = estado;
 	}
 
-	public Boolean getEstado() {
-		return estado;
+	public Boolean getAtivo() {
+		return ativo;
 	}
 	
 	public Integer getRequisicoes() {
