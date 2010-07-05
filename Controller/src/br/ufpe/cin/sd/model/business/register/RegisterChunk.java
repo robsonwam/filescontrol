@@ -55,7 +55,7 @@ public class RegisterChunk {
     
     public void inserirListaBalanceada(ArrayList<Chunk> chunkList){
     	Node node = new Node();
-		node.setEstado(true);
+		node.setAtivo(true);
 		ArrayList<Node> nodeList = (ArrayList<Node>) iRegisterNode.buscarPorExemplo(node, Order.asc("id"));
 		for (int i = 0; i < nodeList.size(); i++) {
 			for (int j = 0; j < chunkList.size()-1; j++) {
