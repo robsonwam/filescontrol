@@ -1,7 +1,10 @@
 package br.ufpe.cin.sd.model.business.entities;
 
+import static javax.persistence.CascadeType.PERSIST;
+
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Set;
 
 
@@ -27,7 +30,7 @@ public class Node implements Serializable {
 	private Integer requisicoes;
 
 	//bi-directional many-to-many association to Chunk
-    @ManyToMany
+	@ManyToMany(cascade = PERSIST)
 	@JoinTable(
 		name="node_chunk"
 		, joinColumns={
