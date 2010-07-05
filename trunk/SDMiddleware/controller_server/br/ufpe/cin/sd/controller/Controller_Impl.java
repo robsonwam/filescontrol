@@ -35,14 +35,24 @@ public class Controller_Impl implements Controller {
 	// }
 	//
 	public boolean registerNode(String ip, Integer port) {
+		boolean result = false;
 		NodePK pk = new NodePK();
 		pk.setIp(ip);
 		pk.setPort(port);
 		Node node = new Node();
 		node.setId(pk);
-		node.setRequisicoes(0);
-		node.setAtivo(true);
-		return this.inserir(node);
+		Node nodeOld = (Node) this.buscarPorChave(node);
+		if(nodeOld != null){
+			nodeOld.setAtivo(true);
+			this.merge(nodeOld);
+			result = true;
+		}else{
+			node.setRequisicoes(0);
+			node.setAtivo(true);
+			result = this.inserir(node);
+		}
+		
+		return result;
 	}
 
 	public boolean inserir(Object object) {
