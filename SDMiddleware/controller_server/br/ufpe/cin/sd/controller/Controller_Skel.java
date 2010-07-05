@@ -1,5 +1,7 @@
 package br.ufpe.cin.sd.controller;
 
+import br.ufpe.cin.sd.model.business.entities.FileSd;
+
 
 public class Controller_Skel implements Controller {
 	
@@ -44,6 +46,12 @@ public class Controller_Skel implements Controller {
 		// TODO Auto-generated method stub
 		this.controller.ativarNode(host, ip, ativo);
 		
+	}
+
+	@Override
+	public FileSd requestFile(int fileID) {
+		// TODO Auto-generated method stub
+		return this.controller.requestFile(fileID);
 	}
 
 }

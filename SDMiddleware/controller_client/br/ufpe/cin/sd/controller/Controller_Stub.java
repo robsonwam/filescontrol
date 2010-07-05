@@ -3,6 +3,7 @@ package br.ufpe.cin.sd.controller;
 import br.cin.ufpe.in1118.middleware.distribution.services.GenericStub;
 import br.cin.ufpe.in1118.middleware.distribution.services.ObjectReference;
 import br.cin.ufpe.in1118.middleware.exceptions.RemoteException;
+import br.ufpe.cin.sd.model.business.entities.FileSd;
 
 public class Controller_Stub extends GenericStub implements Controller {
 
@@ -79,6 +80,19 @@ public class Controller_Stub extends GenericStub implements Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public FileSd requestFile(int fileID) {
+		// TODO Auto-generated method stub
+		try {
+			return (FileSd) super.execute("requestFile", fileID);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 
