@@ -237,6 +237,7 @@ public class Controller_Impl implements Controller {
 						boolean ativo = false;
 
 						for (Node no : listao) {
+							ativo = false;
 							int ping = -1;
 							if (isON(no)) {
 								String host = no.getId().getIp();
