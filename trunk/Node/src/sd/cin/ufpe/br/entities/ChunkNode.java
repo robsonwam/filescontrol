@@ -8,8 +8,8 @@ import javax.persistence.*;
  * The persistent class for the chunk database table.
  * 
  */
-@Entity
-public class Chunk implements Serializable {
+@Entity(name="chunk")
+public class ChunkNode implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,7 +20,7 @@ public class Chunk implements Serializable {
 
 	private byte[] stream;
 
-    public Chunk() {
+    public ChunkNode() {
     }
 
 	public Integer getId() {

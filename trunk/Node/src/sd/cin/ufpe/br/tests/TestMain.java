@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import sd.cin.ufpe.br.business.ChunkController;
-import sd.cin.ufpe.br.entities.Chunk;
+import sd.cin.ufpe.br.business.Node_Impl;
+import sd.cin.ufpe.br.entities.ChunkNode;
 import sd.cin.ufpe.br.exceptions.ExclusaoInvalidaException;
 import sd.cin.ufpe.br.exceptions.OperacaoInvalidaException;
 
@@ -13,7 +13,7 @@ import sd.cin.ufpe.br.exceptions.OperacaoInvalidaException;
 public class TestMain {
 	public static void main(String[] args) throws OperacaoInvalidaException, ExclusaoInvalidaException {
 					
-		ChunkController business = new ChunkController();	
+		Node_Impl business = new Node_Impl();	
 		
 		try {	
 			File file = new File("c:\\Users\\salvio\\Documents\\pagamento1.jpg");
@@ -26,7 +26,7 @@ public class TestMain {
 			fileStream = new FileInputStream(file);
 			
 		
-			Chunk chunk = new Chunk();
+			ChunkNode chunk = new ChunkNode();
 			chunk.setId(2);
 			chunk.setFileId(8);
 			chunk.setStream(bytes);
