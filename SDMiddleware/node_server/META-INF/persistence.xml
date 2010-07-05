@@ -27,7 +27,7 @@
 		<properties>
 			<property name="hibernate.connection.username" value="postgres" />
 
-			<property name="hibernate.connection.password" value="123456" />
+			<property name="hibernate.connection.password" value="fisica01" />
 
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 
