@@ -30,9 +30,9 @@ public class NodeClient {
 //
 //	}
 
-	public static Node getNode(String host, Integer port) throws RemoteException {
+	public static Node getRemoteNode(String host, Integer port) throws RemoteException {
 		Node node = null;
-		JavaReference reference = new JavaReference(host, port, "nodeService", Node.class.getCanonicalName());
+		JavaReference reference = new JavaReference(host, port, "nService", Node.class.getCanonicalName());
 		return new Node_Stub(reference);
 	}
 
