@@ -11,13 +11,31 @@
 		<properties>
 			<property name="hibernate.connection.username" value="postgres" />
 
-			<property name="hibernate.connection.password" value="123456" />
+			<property name="hibernate.connection.password" value="fisica01" />
 
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 
 			<property name="hibernate.show_sql" value="true" />
 
 			<property name="hibernate.connection.url" value="jdbc:postgresql:controllerDB" />
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+
+		</properties>
+	</persistence-unit>
+	<persistence-unit name="FileControl">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>sd.cin.ufpe.br.entities.ChunkNode</class>
+		<properties>
+			<property name="hibernate.connection.username" value="postgres" />
+
+			<property name="hibernate.connection.password" value="123456" />
+
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+
+			<property name="hibernate.show_sql" value="true" />
+
+			<property name="hibernate.connection.url" value="jdbc:postgresql:filecontrol" />
 
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 
