@@ -1,19 +1,23 @@
 package sd.cin.ufpe.br.business;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import br.cin.ufpe.in1118.middleware.communication.TCPAddress;
 import br.cin.ufpe.in1118.middleware.distribution.Middleware;
 import br.cin.ufpe.in1118.middleware.distribution.services.JavaReference;
 import br.cin.ufpe.in1118.middleware.distribution.services.naming.Naming;
 import br.cin.ufpe.in1118.middleware.distribution.services.naming.NamingService;
 import br.cin.ufpe.in1118.middleware.exceptions.RemoteException;
+import br.ufpe.cin.sd.controller.Controller;
 
 
 public class NodeServer {
 
-	public static void main(String[] args) throws RemoteException {
+	public static void main(String[] args) throws RemoteException, UnknownHostException {
 		
 		if (args.length != 3) {
-			args = new String[] {"localhost", "9001", "9500"};
+			args = new String[] {"localhost", "9001", "9501"};
 		}
 		
 		String hostNamingServer = args[0];
@@ -32,5 +36,9 @@ public class NodeServer {
 		System.out.println("===> Incluindo uma referência do Node no serviço de Nomes");
 		Naming naming = NamingService.getNamingInstance(hostNamingServer, portNamingServer);
 		naming.bind("nodeService", new JavaReference(port, "nService", Node.class.getCanonicalName()));
+		
+		Controller controller = (Controller) naming.lookup("controllerService");
+		String hostAddress = InetAddress.getLocalHost().getHostAddress();
+		controller.registerNode(hostAddress, port);
 	}
 }
