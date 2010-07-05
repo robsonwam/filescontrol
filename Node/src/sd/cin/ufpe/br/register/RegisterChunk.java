@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
-import sd.cin.ufpe.br.dao.impl.ChunkDAO;
-import sd.cin.ufpe.br.entities.Chunk;
+import sd.cin.ufpe.br.dao.impl.ChunkNodeDAO;
+import sd.cin.ufpe.br.entities.ChunkNode;
 
 public class RegisterChunk {
 	private static RegisterChunk registerChunk = null;
 
-    private IRegister<Chunk> iRegister = null;
+    private IRegister<ChunkNode> iRegister = null;
 
     public static RegisterChunk getInstance()
     {
@@ -23,14 +23,14 @@ public class RegisterChunk {
     
     private RegisterChunk()
     {
-        iRegister = ChunkDAO.getInstance();
+        iRegister = ChunkNodeDAO.getInstance();
     }
     
     public boolean inserir(Object object){
     	boolean retorno = true;
 		try {
 			iRegister.begin();
-			iRegister.salvar((Chunk) object);
+			iRegister.salvar((ChunkNode) object);
 			
 		} catch (Exception e) {
 			retorno = false;
@@ -43,7 +43,7 @@ public class RegisterChunk {
 		return retorno;
     }
 
-	public boolean remover(Chunk object) {
+	public boolean remover(ChunkNode object) {
 		boolean retorno = true;
 		
 		try{
@@ -60,7 +60,7 @@ public class RegisterChunk {
 		return retorno;
 	}
 
-	public Object merge(Chunk object) {
+	public Object merge(ChunkNode object) {
 		Object retorno = null;
 		iRegister.begin();
 		retorno = iRegister.merge(object);
@@ -73,7 +73,7 @@ public class RegisterChunk {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List buscarPorExemplo(Chunk object, Order[] ordenacoes) {
+	public List buscarPorExemplo(ChunkNode object, Order[] ordenacoes) {
 		return iRegister.buscarPorExemplo(object, ordenacoes);
 	}
 }
