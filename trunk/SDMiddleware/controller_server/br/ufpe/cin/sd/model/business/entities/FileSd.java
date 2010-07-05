@@ -2,6 +2,7 @@ package br.ufpe.cin.sd.model.business.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Set;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -23,6 +24,10 @@ public class FileSd implements Serializable {
 	
 	@Transient
 	byte[] file;
+	
+	@Column(name="size")
+	private Integer size;
+
 
 	//bi-directional many-to-one association to Chunk
 	@OneToMany(mappedBy="fileSd")
@@ -55,6 +60,14 @@ public class FileSd implements Serializable {
 		this.chunks = chunks;
 	}
 
+	public Integer getSize() {
+		return size;
+	}
+	
+	public void setSize(Integer size) {
+		this.size = size;
+	}
+	
 	public byte[] getFile() {
 		return file;
 	}

@@ -1,21 +1,14 @@
 package br.ufpe.cin.sd.controller;
 
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
 
-import br.cin.ufpe.in1118.middleware.distribution.services.JavaReference;
-import br.cin.ufpe.in1118.middleware.distribution.services.ObjectReference;
-import br.cin.ufpe.in1118.middleware.distribution.services.WSReference;
-import br.cin.ufpe.in1118.middleware.distribution.services.naming.Naming_Impl;
-import br.cin.ufpe.in1118.middleware.distribution.services.util.MiddlewareUtil;
 import br.cin.ufpe.in1118.middleware.distribution.services.util.Ping;
-import br.ufpe.cin.sd.exceptions.ExclusaoInvalidaException;
 import br.ufpe.cin.sd.exceptions.OperacaoInvalidaException;
 import br.ufpe.cin.sd.model.business.entities.Arquivo;
 import br.ufpe.cin.sd.model.business.entities.Chunk;
@@ -60,6 +53,7 @@ public class Controller_Impl implements Controller {
 			fileSd.setFile(((Arquivo) object).getFile());
 			fileSd.setId(((Arquivo) object).getId());
 			fileSd.setName(((Arquivo) object).getName());
+			fileSd.setSize(((Arquivo) object).getFile().length);
 			return registerFileSd.inserir(fileSd);
 		} else if (object instanceof Node) {
 			return registerNode.inserir((Node) object);
@@ -136,18 +130,58 @@ public class Controller_Impl implements Controller {
 		}
 	}
 
-	public boolean requestFile(int fileID) {
-		boolean result = false;
+	public FileSd requestFile(int fileID) {
+		FileSd result = null;
 
 		FileSd fileSd = new FileSd();
 		fileSd.setId(fileID);
 
-		FileSd file = (FileSd) buscarPorChave(fileSd);
-		ArrayList<Chunk> chunksList = (ArrayList<Chunk>) file.getChunks();
-		for (Chunk chunk : chunksList) {
-			chunk.getNodes();
+		byte[] reqFileArray = null;
+		ArrayList<Chunk> reqChunkList = null;
+
+		FileSd fileTrans = (FileSd) buscarPorChave(fileSd);
+		result.setId(fileTrans.getId());
+		result.setName(fileTrans.getName());
+		reqFileArray = new byte[fileTrans.getSize()];
+		ArrayList<Chunk> chunkList = (ArrayList<Chunk>) fileTrans.getChunks();
+		for (Chunk chunk : chunkList) {
+			reqChunkList.add(requestChunk(chunk));
 		}
 
+		int index = 0;
+		for (int i = 0; i < reqChunkList.size(); i++) {
+			System.arraycopy(reqChunkList.get(i).getStream(), 0, reqFileArray,
+					index, reqChunkList.get(i).getStream().length);
+			index = index + reqChunkList.get(i).getStream().length;
+		}
+
+		result.setFile(reqFileArray);
+
+		return result;
+	}
+
+	private Chunk requestChunk(Chunk chunkTrans) {
+		Chunk result = null;
+
+		ArrayList<Node> nodeList = (ArrayList<Node>) chunkTrans.getNodes();
+
+		Node reqNode = null;
+		Collections.sort(nodeList, new Comparator<Node>() {
+
+			@Override
+			public int compare(Node o1, Node o2) {
+				return o1.getRequisicoes() - o2.getRequisicoes();
+			}
+		});
+		for (Node node : nodeList) {
+			if (node.getAtivo() == true) {
+				reqNode = node;
+				// result = metodo que traz o pedaco
+				if (result != null) {
+					break;
+				}
+			}
+		}
 		return result;
 	}
 
@@ -199,10 +233,11 @@ public class Controller_Impl implements Controller {
 								ping = Ping.ping(host);
 							}
 							// changeServerStatus(no, ping);
-							if (ping == 1){
+							if (ping == 1) {
 								ativo = true;
 							}
-							ativarNode(no.getId().getIp(), no.getId().getPort(), ativo);
+							ativarNode(no.getId().getIp(),
+									no.getId().getPort(), ativo);
 						}
 
 					}

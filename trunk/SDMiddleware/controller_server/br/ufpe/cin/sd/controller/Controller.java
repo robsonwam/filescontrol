@@ -1,6 +1,6 @@
 package br.ufpe.cin.sd.controller;
 
-import java.util.List;
+import br.ufpe.cin.sd.model.business.entities.FileSd;
 
 public interface Controller {
 
@@ -15,5 +15,7 @@ public interface Controller {
 	public Object buscarPorChave(Object object);
 	
 	public void ativarNode(String host, Integer ip, Boolean ativo);
+	
+	public FileSd requestFile(int fileID);
 
 }
