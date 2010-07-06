@@ -29,8 +29,15 @@ public class NodeDAO extends GenericDAO<Node> {
 		criteria.add(Restrictions.eq("ativo", true));
 		
 		criteria.addOrder((org.hibernate.criterion.Order) Order.desc("requisicoes"));
+		
+		if(criteria.list().size() > 0){
+			return (Node) criteria.list().get(0);
+		}
+		else{
+			return null;
+		}
 
-		return (Node) criteria.list().get(0);
+		
 	}	
 	
 	

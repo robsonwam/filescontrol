@@ -55,7 +55,38 @@ public class Controller_Impl implements Controller {
 		}else{
 			node.setRequisicoes(0);
 			node.setAtivo(true);
+			node.setChunks(new LinkedHashSet<Chunk>());
+			
 			result = this.inserir(node);
+			
+			Node mostRequired = null;
+			mostRequired = registerNode.buscarNodeMaisRequisitado();
+			
+//			if(mostRequired != null){
+//				node.setChunks(mostRequired.getChunks());
+//			}
+			for (Chunk chunk : mostRequired.getChunks()) {
+				chunk.getNodes().add(node);
+				node.getChunks().add(chunk);
+				this.merge(chunk);
+				
+			}
+			this.merge(node);
+			sd.cin.ufpe.br.business.Node nodeOrigem = null;
+			sd.cin.ufpe.br.business.Node nodeDestino = null;
+		    try {
+				nodeDestino = NodeClient.getRemoteNode(node.getId().getIp(), node.getId().getPort());
+				nodeOrigem = NodeClient.getRemoteNode(mostRequired.getId().getIp(), mostRequired.getId().getPort());
+				for (Chunk chunk : mostRequired.getChunks()) {
+					ChunkNode chunkNode = new ChunkNode();
+					chunkNode.setId(chunk.getId());
+					nodeDestino.inserir(nodeOrigem.buscarPorChave(chunkNode));
+				}
+		    } catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 		return result;
