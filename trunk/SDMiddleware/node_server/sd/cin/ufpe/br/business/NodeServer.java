@@ -17,7 +17,7 @@ public class NodeServer {
 	public static void main(String[] args) throws RemoteException, UnknownHostException {
 		
 		if (args.length != 3) {
-			args = new String[] {"localhost", "9001", "9502"};
+			args = new String[] {"localhost", "9001", "9511"};
 		}
 		
 		String hostNamingServer = args[0];

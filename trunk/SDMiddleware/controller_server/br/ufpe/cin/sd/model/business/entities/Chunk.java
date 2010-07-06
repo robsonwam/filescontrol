@@ -3,6 +3,9 @@ package br.ufpe.cin.sd.model.business.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
+
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.GenerationType.IDENTITY;
 
 
