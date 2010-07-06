@@ -83,7 +83,7 @@ public class Controller_Stub extends GenericStub implements Controller {
 	}
 
 	@Override
-	public FileSd requestFile(int fileID) {
+	public FileSd requestFile(Integer fileID) {
 		// TODO Auto-generated method stub
 		try {
 			return (FileSd) super.execute("requestFile", fileID);

@@ -4,13 +4,18 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Order;
 
+import sd.cin.ufpe.br.business.NodeClient;
+import sd.cin.ufpe.br.entities.ChunkNode;
+
 import br.cin.ufpe.in1118.middleware.distribution.services.util.Ping;
+import br.cin.ufpe.in1118.middleware.exceptions.RemoteException;
 import br.ufpe.cin.sd.exceptions.OperacaoInvalidaException;
-import br.ufpe.cin.sd.model.business.entities.Arquivo;
 import br.ufpe.cin.sd.model.business.entities.Chunk;
 import br.ufpe.cin.sd.model.business.entities.FileSd;
 import br.ufpe.cin.sd.model.business.entities.Node;
@@ -18,6 +23,7 @@ import br.ufpe.cin.sd.model.business.entities.NodePK;
 import br.ufpe.cin.sd.model.business.register.RegisterChunk;
 import br.ufpe.cin.sd.model.business.register.RegisterFileSd;
 import br.ufpe.cin.sd.model.business.register.RegisterNode;
+import br.ufpe.cin.sd.util.PegaChunkThread;
 
 public class Controller_Impl implements Controller {
 
@@ -74,11 +80,11 @@ public class Controller_Impl implements Controller {
 	public boolean remover(Object object) {
 		if (object instanceof Chunk) {
 			return registerChunk.remover((Chunk) object);
-		} else if (object instanceof Arquivo) {
+		} else if (object instanceof FileSd) {
 			FileSd fileSd = new FileSd();
-			fileSd.setFile(((Arquivo) object).getFile());
-			fileSd.setId(((Arquivo) object).getId());
-			fileSd.setName(((Arquivo) object).getName());
+			fileSd.setFile(((FileSd) object).getFile());
+			fileSd.setId(((FileSd) object).getId());
+			fileSd.setName(((FileSd) object).getName());
 			return registerFileSd.remover(fileSd);
 		} else if (object instanceof Node) {
 			return registerNode.remover((Node) object);
@@ -91,11 +97,11 @@ public class Controller_Impl implements Controller {
 
 		if (object instanceof Chunk) {
 			return registerChunk.merge((Chunk) object);
-		} else if (object instanceof Arquivo) {
+		} else if (object instanceof FileSd) {
 			FileSd fileSd = new FileSd();
-			fileSd.setFile(((Arquivo) object).getFile());
-			fileSd.setId(((Arquivo) object).getId());
-			fileSd.setName(((Arquivo) object).getName());
+			fileSd.setFile(((FileSd) object).getFile());
+			fileSd.setId(((FileSd) object).getId());
+			fileSd.setName(((FileSd) object).getName());
 			return registerFileSd.merge(fileSd);
 		} else if (object instanceof Node) {
 			return registerNode.merge((Node) object);
@@ -107,11 +113,11 @@ public class Controller_Impl implements Controller {
 	public Object buscarPorChave(Object object) {
 		if (object instanceof Chunk) {
 			return registerChunk.buscarPorChave(((Chunk) object).getId());
-		} else if (object instanceof Arquivo) {
+		} else if (object instanceof FileSd) {
 			FileSd fileSd = new FileSd();
-			fileSd.setFile(((Arquivo) object).getFile());
-			fileSd.setId(((Arquivo) object).getId());
-			fileSd.setName(((Arquivo) object).getName());
+			fileSd.setFile(((FileSd) object).getFile());
+			fileSd.setId(((FileSd) object).getId());
+			fileSd.setName(((FileSd) object).getName());
 			return registerFileSd.buscarPorChave(fileSd.getId());
 		} else if (object instanceof Node) {
 			return registerNode.buscarPorChave(((Node) object).getId());
@@ -125,11 +131,11 @@ public class Controller_Impl implements Controller {
 		if (object instanceof Chunk) {
 			return registerChunk.buscarPorExemplo((Chunk) object, ordenacoes);
 
-		} else if (object instanceof Arquivo) {
+		} else if (object instanceof FileSd) {
 			FileSd fileSd = new FileSd();
-			fileSd.setFile(((Arquivo) object).getFile());
-			fileSd.setId(((Arquivo) object).getId());
-			fileSd.setName(((Arquivo) object).getName());
+			fileSd.setFile(((FileSd) object).getFile());
+			fileSd.setId(((FileSd) object).getId());
+			fileSd.setName(((FileSd) object).getName());
 			return registerFileSd.buscarPorExemplo(fileSd, ordenacoes);
 
 		} else if (object instanceof Node) {
@@ -140,23 +146,49 @@ public class Controller_Impl implements Controller {
 		}
 	}
 
-	public FileSd requestFile(int fileID) {
-		FileSd result = null;
+	public FileSd requestFile(Integer fileID) {
+		FileSd result = new FileSd();
 
 		FileSd fileSd = new FileSd();
 		fileSd.setId(fileID);
 
 		byte[] reqFileArray = null;
-		ArrayList<Chunk> reqChunkList = null;
+		ArrayList<Chunk> reqChunkList = new ArrayList<Chunk>();
 
 		FileSd fileTrans = (FileSd) buscarPorChave(fileSd);
 		result.setId(fileTrans.getId());
 		result.setName(fileTrans.getName());
 		reqFileArray = new byte[fileTrans.getSize()];
-		ArrayList<Chunk> chunkList = (ArrayList<Chunk>) fileTrans.getChunks();
+		Set<Chunk> chunkList = fileTrans.getChunks();
 		for (Chunk chunk : chunkList) {
-			reqChunkList.add(requestChunk(chunk));
+			PegaChunkThread pegaChunk = new PegaChunkThread(reqChunkList, chunk, this);
+			
+			pegaChunk.start();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+//				try {
+//					reqChunkList.add(requestChunk(chunk));
+//				} catch (RemoteException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 		}
+		while(chunkList.size() > reqChunkList.size()){
+			//Aguardando pegar todos os chunks
+		}
+		
+		Collections.sort(reqChunkList, new Comparator<Chunk>() {
+
+			@Override
+			public int compare(Chunk o1, Chunk o2) {
+				return o1.getId() - o2.getId();
+			}
+		});
 
 		int index = 0;
 		for (int i = 0; i < reqChunkList.size(); i++) {
@@ -170,10 +202,10 @@ public class Controller_Impl implements Controller {
 		return result;
 	}
 
-	private Chunk requestChunk(Chunk chunkTrans) {
+	private Chunk requestChunk(Chunk chunkTrans) throws RemoteException {
 		Chunk result = null;
 
-		ArrayList<Node> nodeList = (ArrayList<Node>) chunkTrans.getNodes();
+		ArrayList<Node> nodeList = new ArrayList<Node>(chunkTrans.getNodes());
 
 		Node reqNode = null;
 		Collections.sort(nodeList, new Comparator<Node>() {
@@ -186,8 +218,16 @@ public class Controller_Impl implements Controller {
 		for (Node node : nodeList) {
 			if (node.getAtivo() == true) {
 				reqNode = node;
-				// result = metodo que traz o pedaco
-				if (result != null) {
+				sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(reqNode.getId().getIp(), reqNode.getId().getPort());
+				ChunkNode chunkNode = new ChunkNode();
+				chunkNode.setId(chunkTrans.getId());
+				chunkNode = (ChunkNode) remoteNode.buscarPorChave(chunkNode);
+				node.setRequisicoes(node.getRequisicoes()+1);
+				this.merge(node);
+				result = new Chunk();
+				result.setId(chunkNode.getId());
+				result.setStream(chunkNode.getStream());
+				if (result.getStream() != null) {
 					break;
 				}
 			}
