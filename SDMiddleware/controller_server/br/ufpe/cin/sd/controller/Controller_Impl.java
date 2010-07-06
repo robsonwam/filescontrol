@@ -58,12 +58,12 @@ public class Controller_Impl implements Controller {
 	public boolean inserir(Object object) {
 		if (object instanceof Chunk) {
 			return registerChunk.inserir((Chunk) object);
-		} else if (object instanceof Arquivo) {
+		} else if (object instanceof FileSd) {
 			FileSd fileSd = new FileSd();
-			fileSd.setFile(((Arquivo) object).getFile());
-			fileSd.setId(((Arquivo) object).getId());
-			fileSd.setName(((Arquivo) object).getName());
-			fileSd.setSize(((Arquivo) object).getFile().length);
+			fileSd.setFile(((FileSd) object).getFile());
+			fileSd.setId(((FileSd) object).getId());
+			fileSd.setName(((FileSd) object).getName());
+			fileSd.setSize(((FileSd) object).getFile().length);
 			return registerFileSd.inserir(fileSd);
 		} else if (object instanceof Node) {
 			return registerNode.inserir((Node) object);

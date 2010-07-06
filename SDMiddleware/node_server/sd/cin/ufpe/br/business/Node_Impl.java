@@ -27,6 +27,18 @@ public class Node_Impl implements Node{
 		}
 		return false;
 	}
+	
+
+	@Override
+	public boolean inserirChunk(Integer idFile, Integer idChunk, byte[] stream) {
+		// TODO Auto-generated method stub
+		
+		ChunkNode chunk = new ChunkNode();
+		chunk.setFileId(idFile);
+		chunk.setId(idChunk);
+		chunk.setStream(stream);
+		return this.inserir(chunk);
+	}
 
 	public boolean remover(Object object) {
 		if (object instanceof ChunkNode) {
@@ -56,5 +68,6 @@ public class Node_Impl implements Node{
 		super();
 		registerChunk = RegisterChunk.getInstance();
 	}
+
 
 }

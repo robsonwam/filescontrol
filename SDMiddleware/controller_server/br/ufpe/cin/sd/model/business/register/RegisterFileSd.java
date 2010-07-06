@@ -99,7 +99,9 @@ public class RegisterFileSd {
 	public ArrayList<Chunk> chunkonizer(FileSd fileSd) {
 		byte[] fileArray = fileSd.getFile();
 		ArrayList<Chunk> chunkList = new ArrayList<Chunk>();
-		List<Node> nodeList = iRegisterNode.buscarTodos();
+		Node node = new Node();
+		node.setAtivo(true);
+		List<Node> nodeList = iRegisterNode.buscarPorExemplo(node, Order.asc("requisicoes"));
 		int index = 0;
 		int chunkLength = fileArray.length / nodeList.size();
 		int rest = fileArray.length % nodeList.size();

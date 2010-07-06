@@ -1,6 +1,6 @@
 package br.ufpe.cin.sd.model.business.entities;
 
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -30,7 +30,7 @@ public class Node implements Serializable {
 	private Integer requisicoes;
 
 	//bi-directional many-to-many association to Chunk
-	@ManyToMany(cascade = PERSIST)
+	@ManyToMany(cascade = MERGE)
 	@JoinTable(
 		name="node_chunk"
 		, joinColumns={

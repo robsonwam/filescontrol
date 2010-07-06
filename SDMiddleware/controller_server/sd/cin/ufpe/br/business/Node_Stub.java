@@ -58,4 +58,16 @@ public class Node_Stub extends GenericStub implements Node {
 		return null;
 	}
 
+	@Override
+	public boolean inserirChunk(Integer idFile, Integer idChunk, byte[] stream) {
+		// TODO Auto-generated method stub
+		try {
+			return (Boolean) super.execute("inserirChunk", idFile, idChunk, stream);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }
