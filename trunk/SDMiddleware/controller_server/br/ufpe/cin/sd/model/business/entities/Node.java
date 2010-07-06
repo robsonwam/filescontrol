@@ -31,7 +31,7 @@ public class Node implements Serializable {
 	private Integer requisicoes;
 
 	//bi-directional many-to-many association to Chunk
-	@ManyToMany(cascade = { MERGE, PERSIST })
+	@ManyToMany
 	@JoinTable(
 		name="node_chunk"
 		, joinColumns={

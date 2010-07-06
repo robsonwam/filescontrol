@@ -192,26 +192,26 @@ public class Controller_Impl implements Controller {
 		reqFileArray = new byte[fileTrans.getSize()];
 		Set<Chunk> chunkList = fileTrans.getChunks();
 		for (Chunk chunk : chunkList) {
-			PegaChunkThread pegaChunk = new PegaChunkThread(reqChunkList, chunk, this);
+//			PegaChunkThread pegaChunk = new PegaChunkThread(reqChunkList, chunk, this);
+//			
+//			pegaChunk.start();
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			
-			pegaChunk.start();
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-//				try {
-//					reqChunkList.add(requestChunk(chunk));
-//				} catch (RemoteException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				try {
+					reqChunkList.add(requestChunk(chunk));
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
-		while(chunkList.size() > reqChunkList.size()){
-			//Aguardando pegar todos os chunks
-		}
+//		while(chunkList.size() > reqChunkList.size()){
+//			//Aguardando pegar todos os chunks
+//		}
 		
 		Collections.sort(reqChunkList, new Comparator<Chunk>() {
 
@@ -236,7 +236,8 @@ public class Controller_Impl implements Controller {
 	private Chunk requestChunk(Chunk chunkTrans) throws RemoteException {
 		Chunk result = null;
 
-		ArrayList<Node> nodeList = new ArrayList<Node>(chunkTrans.getNodes());
+		List<Node> nodeList = registerNode.getNodesByChunk(chunkTrans);
+		System.out.println();
 
 		Node reqNode = null;
 		Collections.sort(nodeList, new Comparator<Node>() {
@@ -325,7 +326,7 @@ public class Controller_Impl implements Controller {
 					}
 
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(3000);
 					} catch (InterruptedException e) {
 					}
 				}

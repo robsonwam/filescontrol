@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import br.ufpe.cin.sd.model.business.entities.Chunk;
 import br.ufpe.cin.sd.model.business.entities.Node;
 import br.ufpe.cin.sd.model.business.entities.NodePK;
 import br.ufpe.cin.sd.model.persistence.dao.impl.NodeDAO;
@@ -89,5 +90,9 @@ public class RegisterNode {
 	
 	public Node buscarNodeMaisRequisitado() {
 		return ((NodeDAO) iRegister).buscarNodeMaisRequisitado();
+	}
+	
+	public List<Node> getNodesByChunk(Chunk chunk){
+		return ((NodeDAO) iRegister).getNodesByChunk(chunk);
 	}
 }

@@ -30,7 +30,7 @@ public class Chunk implements Serializable {
 	private FileSd fileSd;
 
 	//bi-directional many-to-many association to Node
-	@ManyToMany(mappedBy="chunks")
+	@ManyToMany(mappedBy="chunks", cascade = { MERGE, PERSIST })
 	private Set<Node> nodes;
 
     public Chunk() {
