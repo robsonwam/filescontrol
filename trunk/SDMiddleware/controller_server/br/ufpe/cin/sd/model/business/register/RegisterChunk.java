@@ -1,13 +1,20 @@
 package br.ufpe.cin.sd.model.business.register;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.crypto.NodeSetData;
 
 import org.hibernate.criterion.Order;
 import org.w3c.dom.NodeList;
 
+import sd.cin.ufpe.br.business.NodeClient;
+import sd.cin.ufpe.br.entities.ChunkNode;
+
+import br.cin.ufpe.in1118.middleware.exceptions.RemoteException;
 import br.ufpe.cin.sd.exceptions.ExclusaoInvalidaException;
 import br.ufpe.cin.sd.model.business.entities.Chunk;
 import br.ufpe.cin.sd.model.business.entities.Node;
@@ -20,7 +27,8 @@ public class RegisterChunk {
 	private static RegisterChunk registerChunk = null;
 
     private IRegister<Chunk> iRegister = null;
-    private IRegister<Node> iRegisterNode = null;
+    private IRegister<Node> iRegisterNodeDao = null;
+    private RegisterNode registerNode = null;
 
     public static RegisterChunk getInstance()
     {
@@ -34,7 +42,8 @@ public class RegisterChunk {
     private RegisterChunk()
     {
         iRegister = ChunkDAO.getInstance();
-        iRegisterNode = NodeDAO.getInstance();
+        iRegisterNodeDao = NodeDAO.getInstance();
+        registerNode = RegisterNode.getInstance();
     }
     
     public boolean inserir(Object object){
@@ -53,32 +62,30 @@ public class RegisterChunk {
 		return retorno;
     }
     
-    public void inserirListaBalanceada(ArrayList<Chunk> chunkList){
+    public void inserirListaBalanceada(ArrayList<Chunk> chunkList) throws RemoteException{
     	Node node = new Node();
 		node.setAtivo(true);
-		ArrayList<Node> nodeList = (ArrayList<Node>) iRegisterNode.buscarPorExemplo(node, Order.asc("id"));
+		ArrayList<Node> nodeList = (ArrayList<Node>) iRegisterNodeDao.buscarPorExemplo(node, Order.asc("id"));
 		for (int i = 0; i < nodeList.size(); i++) {
+			Chunk chunk = null;
+			Set<Chunk> setChunk = new LinkedHashSet<Chunk>() ;
 			for (int j = 0; j < chunkList.size()-1; j++) {
-				String ip = nodeList.get(i).getId().getIp();
-				int port = nodeList.get(i).getId().getPort();
-				Chunk chunk = chunkList.get((j+i)%3);
-				sendChunkToNode(chunk, ip, port);
+				chunk = chunkList.get((j+i)%chunkList.size());
+				setChunk.add(chunk);
 			}
-			try {
-				iRegister.salvar(chunkList.get(i));
-			} catch (ExclusaoInvalidaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			nodeList.get(i).setChunks(setChunk);
+			iRegisterNodeDao.merge(nodeList.get(i));
+			sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(nodeList.get(i).getId().getIp(), nodeList.get(i).getId().getPort());
+			for (Chunk chunk2 : setChunk) {
+				ChunkNode chunkNode = new ChunkNode();
+				chunkNode.setFileId(chunk.getFileSd().getId());
+				chunkNode.setId(chunk.getId());
+				chunkNode.setStream(chunk.getStream());
+				remoteNode.inserir(chunkNode);
 			}
 		}
     }
     
-    private boolean sendChunkToNode(Chunk chunk, String ip, int port){
-    	boolean result = false;
-    	//Aqui vai o código de comunicacao
-    	return result;
-    }
-
 	public boolean remover(Chunk object) {
 		boolean retorno = true;
 		

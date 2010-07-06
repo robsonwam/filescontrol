@@ -9,11 +9,11 @@
 		<properties>
 			<property name="hibernate.connection.username" value="postgres" />
 
-			<property name="hibernate.connection.password" value="fisica01" />
+			<property name="hibernate.connection.password" value="123456" />
 
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 
 			<property name="hibernate.connection.url" value="jdbc:postgresql:controllerDB" />
 
@@ -31,7 +31,7 @@
 
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 
 			<property name="hibernate.connection.url" value="jdbc:postgresql:filecontrol" />
 

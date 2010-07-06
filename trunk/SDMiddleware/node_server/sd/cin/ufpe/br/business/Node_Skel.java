@@ -33,4 +33,10 @@ public class Node_Skel implements Node {
 		return this.node.buscarPorChave(object);
 	}
 
+	@Override
+	public boolean inserirChunk(Integer idFile, Integer idChunk, byte[] stream) {
+		// TODO Auto-generated method stub
+		return this.node.inserirChunk(idFile, idChunk, stream);
+	}
+
 }
