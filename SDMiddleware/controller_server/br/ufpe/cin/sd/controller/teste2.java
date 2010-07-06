@@ -6,8 +6,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
+import sd.cin.ufpe.br.business.Node;
+
+import br.cin.ufpe.in1118.middleware.distribution.services.JavaReference;
+import br.cin.ufpe.in1118.middleware.distribution.services.naming.Naming;
+import br.cin.ufpe.in1118.middleware.distribution.services.naming.NamingService;
+import br.cin.ufpe.in1118.middleware.exceptions.RemoteException;
 import br.ufpe.cin.sd.model.business.entities.FileSd;
 
 public class teste2 {
@@ -15,11 +22,19 @@ public class teste2 {
 		
 		FileSd fileSd = new FileSd();
 		
-		Controller_Impl csd = new Controller_Impl();
-		fileSd = csd.requestFile(10);
+		Naming naming = NamingService.getNamingInstance("localhost", 9001);
+		
+		Controller csd =  null;
+		try {
+			csd = (Controller) naming.lookup("controllerService");
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		fileSd = csd.requestFile(3);
 		
 		 File someFile = new
-		 File("C:\\Documents and Settings\\Administrador\\Desktop\\Eclipse-XaaS_restored.png");
+		 File("C:\\Documents and Settings\\vm1\\Desktop\\leao_10001111.jpg");
 		 FileOutputStream fos = null;
 		 try {
 		 fos = new FileOutputStream(someFile);
@@ -36,11 +51,11 @@ public class teste2 {
 		 e.printStackTrace();
 		 }
 		
-		
+//		
 		
 
 //		File file = new File(
-//				"C:\\Documents and Settings\\Administrador\\Desktop\\Eclipse-XaaS.png");
+//				"C:\\Documents and Settings\\vm1\\Desktop\\leao_11.jpg");
 //		FileInputStream fis = null;
 //		try {
 //			fis = new FileInputStream(file);
@@ -65,10 +80,18 @@ public class teste2 {
 //		}
 //		byte[] bytes = bos.toByteArray();
 //
-//		Controller_Impl csd = new Controller_Impl();
+//		Naming naming = NamingService.getNamingInstance("localhost", 9001);
+//		
+//		Controller csd =  null;
+//		try {
+//			csd = (Controller) naming.lookup("controllerService");
+//		} catch (RemoteException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 //
 //		FileSd filesd = new FileSd();
-//		filesd.setName("Arquivo");
+//		filesd.setName("Arquivo_Novo");
 //		filesd.setFile(bytes);
 //
 //		csd.inserir(filesd);

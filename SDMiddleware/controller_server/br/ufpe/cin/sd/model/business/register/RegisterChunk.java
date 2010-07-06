@@ -66,27 +66,54 @@ public class RegisterChunk {
     	Node node = new Node();
 		node.setAtivo(true);
 		ArrayList<Node> nodeList = (ArrayList<Node>) iRegisterNodeDao.buscarPorExemplo(node, Order.asc("id"));
-		for (int i = 0; i < nodeList.size(); i++) {
-			Chunk chunk = null;
-			Set<Chunk> setChunk = new LinkedHashSet<Chunk>() ;
-			for (int j = 0; j < chunkList.size()-1; j++) {
-				chunk = chunkList.get((j+i)%chunkList.size());
-				iRegister.salvar(chunk);
-				setChunk.add(chunk);
+		nodeList.addAll(nodeList);
+		
+		for(int i = 0; i< chunkList.size(); i++){//chunk
+			Chunk chunk = chunkList.get(i);
+			chunk.setNodes(new LinkedHashSet<Node>());
+			for(int j = i; j<i+ chunkList.size() - 1; j++){//node
+				node = nodeList.get(j);
+				chunk.getNodes().add(node);
+				if(node.getChunks() == null){
+					node.setChunks(new LinkedHashSet<Chunk>());
+				}
+				node.getChunks().add(chunk);
+				
 			}
-			Node nodeI = nodeList.get(i);
-			nodeI = iRegisterNodeDao.merge(nodeI);
-			nodeList.get(i).setChunks(nodeI.getChunks());
-			nodeI.setChunks(setChunk);
-			sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(nodeI.getId().getIp(), nodeI.getId().getPort());
-			for (Chunk chunk2 : setChunk) {
+			iRegister.salvar(chunk);
+			
+			for (Node node2 : chunk.getNodes()) {
+				sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(node2.getId().getIp(), node2.getId().getPort());
+				
 				ChunkNode chunkNode = new ChunkNode();
-				chunkNode.setFileId(chunk2.getFileSd().getId());
-				chunkNode.setId(chunk2.getId());
-				chunkNode.setStream(chunk2.getStream());
+				chunkNode.setFileId(chunk.getFileSd().getId());
+				chunkNode.setId(chunk.getId());
+				chunkNode.setStream(chunk.getStream());
 				remoteNode.inserir(chunkNode);
 			}
 		}
+		
+//		for (int i = 0; i < nodeList.size(); i++) {
+//			Chunk chunk = null;
+//			Set<Chunk> setChunk = new LinkedHashSet<Chunk>() ;
+//			for (int j = 0; j < chunkList.size()-1; j++) {
+//				chunk = chunkList.get((j+i)%chunkList.size());
+//				iRegister.salvar(chunk);
+//				setChunk.add(chunk);
+//			}
+//			Node nodeI = nodeList.get(i);
+//			nodeI = iRegisterNodeDao.merge(nodeI);
+//			nodeList.get(i).setChunks(nodeI.getChunks());
+//			nodeI.setChunks(setChunk);
+//			sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(nodeI.getId().getIp(), nodeI.getId().getPort());
+//			for (Chunk chunk2 : setChunk) {
+//				ChunkNode chunkNode = new ChunkNode();
+//				chunkNode.setFileId(chunk2.getFileSd().getId());
+//				chunkNode.setId(chunk2.getId());
+//				chunkNode.setStream(chunk2.getStream());
+//				remoteNode.inserir(chunkNode);
+//			}
+//		}
     }
     
 	public boolean remover(Chunk object) {

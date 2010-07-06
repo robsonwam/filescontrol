@@ -5,10 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import br.ufpe.cin.sd.exceptions.ExclusaoInvalidaException;
 import br.ufpe.cin.sd.model.business.entities.Chunk;
 import br.ufpe.cin.sd.model.business.entities.FileSd;
 import br.ufpe.cin.sd.model.business.entities.Node;
@@ -128,6 +130,12 @@ public class RegisterFileSd {
 			Chunk chunk = new Chunk();
 			chunk.setStream(arrayChunk);
 			chunk.setFileSd(fileSd);
+			if(fileSd.getChunks() == null){
+				fileSd.setChunks(new LinkedHashSet<Chunk>());
+			}
+			fileSd.getChunks().add(chunk);
+//			iRegister.merge(fileSd);
+			
 			chunkList.add(chunk);
 		}
 
