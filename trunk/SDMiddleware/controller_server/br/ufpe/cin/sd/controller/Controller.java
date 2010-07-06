@@ -16,6 +16,6 @@ public interface Controller {
 	
 	public void ativarNode(String host, Integer ip, Boolean ativo);
 	
-	public FileSd requestFile(int fileID);
+	public FileSd requestFile(Integer fileID);
 
 }

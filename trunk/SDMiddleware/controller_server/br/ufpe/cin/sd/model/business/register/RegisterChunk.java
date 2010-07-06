@@ -108,9 +108,17 @@ public class RegisterChunk {
 
 	public Object merge(Chunk object) {
 		Object retorno = null;
-		iRegister.begin();
-		retorno = iRegister.merge(object);
-		iRegister.commit();
+		try{
+			iRegister.begin();
+			retorno = iRegister.merge(object);
+		}catch (Exception e) {
+			retorno = false;
+			iRegister.rollback();
+			e.printStackTrace();
+		} finally {
+			iRegister.commit();
+		}
+		
 		return retorno;
 	}
 	

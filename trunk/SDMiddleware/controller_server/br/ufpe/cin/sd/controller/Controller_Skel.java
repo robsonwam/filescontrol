@@ -49,7 +49,7 @@ public class Controller_Skel implements Controller {
 	}
 
 	@Override
-	public FileSd requestFile(int fileID) {
+	public FileSd requestFile(Integer fileID) {
 		// TODO Auto-generated method stub
 		return this.controller.requestFile(fileID);
 	}
