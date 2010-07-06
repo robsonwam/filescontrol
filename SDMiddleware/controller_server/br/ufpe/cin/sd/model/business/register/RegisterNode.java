@@ -86,4 +86,8 @@ public class RegisterNode {
 	public List buscarPorExemplo(Node object, Order[] ordenacoes) {
 		return iRegister.buscarPorExemplo(object, ordenacoes);
 	}
+	
+	public Node buscarNodeMaisRequisitado() {
+		return ((NodeDAO) iRegister).buscarNodeMaisRequisitado();
+	}
 }
