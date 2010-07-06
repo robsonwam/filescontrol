@@ -62,7 +62,7 @@ public class RegisterChunk {
 		return retorno;
     }
     
-    public void inserirListaBalanceada(ArrayList<Chunk> chunkList) throws RemoteException{
+    public void inserirListaBalanceada(ArrayList<Chunk> chunkList) throws RemoteException, ExclusaoInvalidaException{
     	Node node = new Node();
 		node.setAtivo(true);
 		ArrayList<Node> nodeList = (ArrayList<Node>) iRegisterNodeDao.buscarPorExemplo(node, Order.asc("id"));
@@ -71,16 +71,19 @@ public class RegisterChunk {
 			Set<Chunk> setChunk = new LinkedHashSet<Chunk>() ;
 			for (int j = 0; j < chunkList.size()-1; j++) {
 				chunk = chunkList.get((j+i)%chunkList.size());
+				iRegister.salvar(chunk);
 				setChunk.add(chunk);
 			}
-			nodeList.get(i).setChunks(setChunk);
-			iRegisterNodeDao.merge(nodeList.get(i));
-			sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(nodeList.get(i).getId().getIp(), nodeList.get(i).getId().getPort());
+			Node nodeI = nodeList.get(i);
+			nodeI = iRegisterNodeDao.merge(nodeI);
+			nodeList.get(i).setChunks(nodeI.getChunks());
+			nodeI.setChunks(setChunk);
+			sd.cin.ufpe.br.business.Node remoteNode = NodeClient.getRemoteNode(nodeI.getId().getIp(), nodeI.getId().getPort());
 			for (Chunk chunk2 : setChunk) {
 				ChunkNode chunkNode = new ChunkNode();
-				chunkNode.setFileId(chunk.getFileSd().getId());
-				chunkNode.setId(chunk.getId());
-				chunkNode.setStream(chunk.getStream());
+				chunkNode.setFileId(chunk2.getFileSd().getId());
+				chunkNode.setId(chunk2.getId());
+				chunkNode.setStream(chunk2.getStream());
 				remoteNode.inserir(chunkNode);
 			}
 		}
