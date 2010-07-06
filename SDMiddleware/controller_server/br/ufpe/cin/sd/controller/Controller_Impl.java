@@ -4,8 +4,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.criterion.Order;
@@ -347,6 +349,25 @@ public class Controller_Impl implements Controller {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public Map<Integer, String> getFiles() {
+		// TODO Auto-generated method stub
+		FileSd fileSd = new FileSd();
+		Map<Integer,String> result  = new HashMap<Integer, String>();
+		Order order[] = {Order.asc("id")};
+		List<FileSd> lista = null;
+		try {
+			lista = this.buscaPorExemplo(fileSd, order);
+		} catch (OperacaoInvalidaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (FileSd fileSd2 : lista) {
+			result.put(fileSd2.getId(), fileSd2.getName());
+		}
+		return result;
 	}
 
 }

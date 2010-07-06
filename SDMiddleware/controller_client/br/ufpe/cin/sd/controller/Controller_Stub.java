@@ -1,5 +1,7 @@
 package br.ufpe.cin.sd.controller;
 
+import java.util.Map;
+
 import br.cin.ufpe.in1118.middleware.distribution.services.GenericStub;
 import br.cin.ufpe.in1118.middleware.distribution.services.ObjectReference;
 import br.cin.ufpe.in1118.middleware.exceptions.RemoteException;
@@ -92,6 +94,18 @@ public class Controller_Stub extends GenericStub implements Controller {
 			e.printStackTrace();
 		}
 		
+		return null;
+	}
+
+	@Override
+	public Map<Integer, String> getFiles() {
+		// TODO Auto-generated method stub
+		try {
+			return (Map<Integer, String>) super.execute("getFiles");
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 		return null;
 	}
 
