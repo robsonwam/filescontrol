@@ -1,5 +1,7 @@
 package br.ufpe.cin.sd.controller;
 
+import java.util.Map;
+
 import br.ufpe.cin.sd.model.business.entities.FileSd;
 
 public interface Controller {
@@ -17,5 +19,7 @@ public interface Controller {
 	public void ativarNode(String host, Integer ip, Boolean ativo);
 	
 	public FileSd requestFile(Integer fileID);
+	
+	public Map<Integer, String> getFiles();
 
 }

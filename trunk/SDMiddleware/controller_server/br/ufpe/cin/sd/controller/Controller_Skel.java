@@ -1,5 +1,7 @@
 package br.ufpe.cin.sd.controller;
 
+import java.util.Map;
+
 import br.ufpe.cin.sd.model.business.entities.FileSd;
 
 
@@ -52,6 +54,12 @@ public class Controller_Skel implements Controller {
 	public FileSd requestFile(Integer fileID) {
 		// TODO Auto-generated method stub
 		return this.controller.requestFile(fileID);
+	}
+
+	@Override
+	public Map<Integer, String> getFiles() {
+		// TODO Auto-generated method stub
+		return this.controller.getFiles();
 	}
 
 }
