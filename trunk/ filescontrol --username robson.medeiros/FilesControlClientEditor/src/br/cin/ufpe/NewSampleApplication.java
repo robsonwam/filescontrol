@@ -1,6 +1,7 @@
 package br.cin.ufpe;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -30,7 +31,7 @@ public class NewSampleApplication extends JFrame {
 	// -constraint=
 	// "582,36"
 	private boolean hasChanged = false; // Indica se o texto foi alterado
-	private static final String title = "Editor de Texto Simples"; // Titulo da
+	private static final String title = "Cliente 2DRS"; // Titulo da
 
 	// janela
 
@@ -188,7 +189,8 @@ public class NewSampleApplication extends JFrame {
 	 */
 	private javax.swing.JTextArea getJTextArea() {
 		if (jTextArea == null) {
-			jTextArea = new javax.swing.JTextArea();
+			jTextArea = new javax.swing.JTextArea(20, 20);
+			jTextArea.setEnabled(false);
 			jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
 				public void keyTyped(java.awt.event.KeyEvent e) { // Detecta
 					// modifica�
@@ -235,11 +237,17 @@ public class NewSampleApplication extends JFrame {
 				// significando o fim do arquivo
 				// E um char não permite negativos
 				// a função read pode gerar IOException
-				int i = fr.read();
-				while (i != -1) {
-					temp += ((char) i);
-					i = fr.read();
-				}
+				FileInputStream fin = new FileInputStream(f.getAbsolutePath());
+				long tamanhoArquivo = fin.getChannel().size();
+				String path = f.getAbsolutePath();
+//				int i = fr.read();
+//				while (i != -1) {
+//					temp += ((char) i);
+//					i = fr.read();
+//				}
+				temp = "Nome do Arquivo : " + f.getName()+
+					   "\nTamanho em Kb :"+ tamanhoArquivo+
+					   "\nPath Local :"+ path;
 				fr.close(); // fecha arquivo
 				getJTextArea().setText(temp); // atribui temp ao controle
 				setTitle(title); // seta o titulo pra remover o * se houver
